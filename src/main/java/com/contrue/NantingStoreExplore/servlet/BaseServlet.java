@@ -1,10 +1,11 @@
-package com.contrue.servlet;
+package com.contrue.NantingStoreExplore.servlet;
 
-import com.contrue.util.SystemLogger;
+import com.contrue.NantingStoreExplore.util.SystemLogger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 
 
@@ -14,7 +15,8 @@ import java.lang.reflect.Method;
  */
 public class BaseServlet extends HttpServlet {
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response){
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        request.setCharacterEncoding("UTF-8");
         response.setContentType("json/application");
         try{
             String methodName = request.getParameter("action");

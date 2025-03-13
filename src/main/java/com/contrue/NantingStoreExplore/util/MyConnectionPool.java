@@ -1,4 +1,4 @@
-package com.contrue.util;
+package com.contrue.NantingStoreExplore.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,13 +8,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
