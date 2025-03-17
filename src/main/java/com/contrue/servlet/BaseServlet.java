@@ -1,6 +1,6 @@
-package com.contrue.NantingStoreExplore.servlet;
+package com.contrue.servlet;
 
-import com.contrue.NantingStoreExplore.util.SystemLogger;
+import com.contrue.util.SystemLogger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

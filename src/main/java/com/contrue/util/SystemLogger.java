@@ -1,4 +1,4 @@
-package com.contrue.NantingStoreExplore.util;
+package com.contrue.util;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
