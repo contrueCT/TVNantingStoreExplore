@@ -1,14 +1,15 @@
-package com.contrue.NantingStoreExplore.util.orm;
+package com.contrue.util.orm;
 
-import com.contrue.NantingStoreExplore.annotation.Column;
-import com.contrue.NantingStoreExplore.annotation.Table;
+import com.contrue.annotation.Column;
+import com.contrue.annotation.Table;
+import com.contrue.util.SystemLogger;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -161,9 +162,87 @@ public class MyORMImpl implements MyORM {
     }
 
     @Override
-    public <T> List<T> select(Connection conn, T po) throws SQLException {
-        return Collections.emptyList();
+    public <T> List<T> select(Connection conn, T po,SelectMethod method) throws SQLException {
+        if(!po.getClass().isAnnotationPresent(Table.class)){
+            throw new SQLException("此类没有被标记为表");
+        }
+        String tableName = po.getClass().getAnnotation(Table.class).name();
+        List<String> columns = new ArrayList<String>();
+        List<Object> values = new ArrayList<>();
+        Integer id = null;
+
+        //找列和值(包括id）
+        for(Field field : po.getClass().getDeclaredFields()){
+            if(field.isAnnotationPresent(Column.class)){
+                field.setAccessible(true);
+                try{
+                    if(field.get(po)!=null){
+                        columns.add(field.getAnnotation(Column.class).name());
+                        values.add(field.get(po));
+                    }
+                }catch(IllegalAccessException e){
+                    throw new SQLException("获取字段值错误");
+                }
+            }
+        }
+
+        if(columns.isEmpty()){
+            throw new SQLException("没有被标记的字段或所有字段为空");
+        }
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("select * from storeExplore.");
+        sql.append(tableName);
+        sql.append(" where");
+        for(int i = 0; i < columns.size(); i++){
+            sql.append(i==0?" ":" "+method+" ");
+            sql.append(columns.get(i));
+            sql.append("=?");
+        }
+
+        List<T> entities;
+        ResultSet resultSet = null;
+        try{
+            PreparedStatement ps = conn.prepareStatement(sql.toString());
+            for(int i = 0; i < columns.size(); i++){
+                ps.setObject(i+1, values.get(i));
+            }
+            resultSet = ps.executeQuery();
+
+            //将resultSet映射为实体类
+            entities = this.mapResultToEntity(resultSet, po);
+
+            return entities;
+        }catch(SQLException e){
+            SystemLogger.logError("sql执行过程或对象映射出错",e);
+        }
+        return null;
     }
 
+    @Override
+    public <T> List<T> mapResultToEntity(ResultSet re, T po) throws SQLException {
+        List<T> entities = new ArrayList<>();
 
+        while (re.next()) {
+            T entity;
+            try {
+                entity = (T)po.getClass().getDeclaredConstructor().newInstance();
+
+                for (Field field : po.getClass().getDeclaredFields()) {
+                    if (field.isAnnotationPresent(Column.class)) {
+                        field.setAccessible(true);
+                        String fieldName = field.getAnnotation(Column.class).name();
+
+                        Object value = re.getObject(fieldName);
+                        field.set(entity, value);
+                    }
+                }
+
+                entities.add(entity);
+            } catch (Exception e) {
+                throw new SQLException("映射实体时发生错误", e);
+            }
+        }
+        return entities;
+    }
 }

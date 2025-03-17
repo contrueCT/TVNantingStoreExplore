@@ -1,4 +1,4 @@
-package com.contrue.NantingStoreExplore.annotation;
+package com.contrue.annotation;
 
 
 import java.lang.annotation.ElementType;

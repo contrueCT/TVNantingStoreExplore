@@ -1,6 +1,7 @@
-package com.contrue.NantingStoreExplore.util.orm;
+package com.contrue.util.orm;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -43,5 +44,7 @@ public interface MyORM {
      * @return      是否插入成功
      * @param <T>   泛型
      */
-    <T> List<T> select(Connection conn, T po) throws SQLException;
+    <T> List<T> select(Connection conn, T po, SelectMethod method) throws SQLException;
+
+    <T> List<T> mapResultToEntity(ResultSet re,T po) throws SQLException;
 }
