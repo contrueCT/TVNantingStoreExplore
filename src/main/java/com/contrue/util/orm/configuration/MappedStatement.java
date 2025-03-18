@@ -19,4 +19,5 @@ public class MappedStatement {
     private String resultType;
     private String openToken;
     private String closeToken;
+    private String actionType;
 }

@@ -15,6 +15,7 @@ public class Configuration {
     //String是xml的namespace+sql的id
     Map<String,MappedStatement> mappedStatementMap = new ConcurrentHashMap<String, MappedStatement>();
 
-
-
+    public MappedStatement getMappedStatement(String statementId) {
+        return mappedStatementMap.get(statementId);
+    }
 }

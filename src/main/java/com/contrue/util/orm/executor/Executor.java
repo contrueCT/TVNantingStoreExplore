@@ -16,5 +16,5 @@ public interface Executor {
      * @return
      * @param <T>
      */
-    <T> List<T> execute(Configuration config, MappedStatement mappedStatement, Object[] parameters, Connection connection) throws SQLException, NoSuchFieldException;
+    <T> List<T> execute(Configuration config, String statementId, Object[] parameters, Connection connection) throws SQLException, NoSuchFieldException;
 }

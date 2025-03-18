@@ -46,5 +46,6 @@ public class User {
     @ForeignKey(name = "user")
     private List<User> followers;
     //多表查寻获得用户权限
+    @ForeignKey(name = "permission")
     private List<Permission> permissions;
 }

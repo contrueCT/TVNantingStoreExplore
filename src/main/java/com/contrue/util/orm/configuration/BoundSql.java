@@ -15,7 +15,7 @@ public class BoundSql {
     String closeToken;
     //占位符始末位置
     Map<Integer,Integer> map = new TreeMap<Integer,Integer>();
-    //sql语句中解析出的参数列表
+    //sql语句中解析出的原类参数名列表
     private List<String> parameterMapperList = new ArrayList<>();
 
     private void parseSqlText(String sql) {
@@ -39,6 +39,7 @@ public class BoundSql {
         for (Map.Entry<Integer,Integer> entry : entrySet) {
             Integer key = entry.getKey()+2;
             Integer value = entry.getValue();
+            //将解析出的参数名称（原类中的字段名）加入集合
             parameterMapperList.add(sqlText.substring(key,value));
         }
         for(String parameterMapper : parameterMapperList) {

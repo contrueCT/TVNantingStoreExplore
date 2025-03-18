@@ -28,12 +28,16 @@ public class XmlMapperBuilder {
             String sql = element.getTextTrim();
             String openToken = element.attributeValue("openToken");
             String closeToken = element.attributeValue("closeToken");
+            String actionType = element.attributeValue("actionType");
 
             MappedStatement mappedStatement = new MappedStatement();
             mappedStatement.setId(id);
             mappedStatement.setResultType(resultType);
             mappedStatement.setSql(sql);
             mappedStatement.setParameters(parameterType);
+            mappedStatement.setOpenToken(openToken);
+            mappedStatement.setCloseToken(closeToken);
+            mappedStatement.setActionType(actionType);
 
             configuration.getMappedStatementMap().put(namespace+"."+mappedStatement.getId(), mappedStatement);
         }
