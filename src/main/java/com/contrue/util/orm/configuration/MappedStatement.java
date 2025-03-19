@@ -20,4 +20,8 @@ public class MappedStatement {
     private String openToken;
     private String closeToken;
     private String actionType;
+
+    public String getParameters() {
+        return parameters;
+    }
 }

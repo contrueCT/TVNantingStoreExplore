@@ -5,5 +5,5 @@ create table likes(
                       target_type varchar(10) not null,
                       target_name varchar(50) not null,
                       user_name varchar(50) not null,
-                      creare_time datetime default current_timestamp
+                      create_time datetime default current_timestamp
 )comment "点赞表";

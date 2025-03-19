@@ -44,7 +44,7 @@
       <dependency>
           <groupId>mysql</groupId>
           <artifactId>mysql-connector-java</artifactId>
-          <version>8.0.33</version> <!-- 请根据需要选择合适的版本 -->
+          <version>8.0.33</version>
       </dependency>
 
       <dependency>

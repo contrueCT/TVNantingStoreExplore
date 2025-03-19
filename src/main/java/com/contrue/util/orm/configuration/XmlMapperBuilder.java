@@ -41,7 +41,5 @@ public class XmlMapperBuilder {
 
             configuration.getMappedStatementMap().put(namespace+"."+mappedStatement.getId(), mappedStatement);
         }
-
-
     }
 }

@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<mapper namespace="com.contrue.NantingStoreExplore.mapper">
+<mapper namespace="com.contrue.mapper.UserMapper">
 
-    <select id = "list" resultType = "com.contrue.po.User">
+    <select id = "list" resultType = "com.contrue.po.User" actionType = "select">
         select * from user
     </select>
 
-    <select id = "findById" resultType="com.contrue.po.User" parameterType = "java.lang.Integer">
+    <select id = "findById" resultType="com.contrue.po.User" parameterType = "com.contrue.po.User" actionType="select" openToken = "#{" closeToken = "}" >
         select * from user where id = #{id}
     </select>
 
+    <select id = "joinSelectPermission" resultType="com.contrue.po.User" parameterType = "com.contrue.po.User" actionType="select" openToken = "#{" closeToken = "}" >
+        select * from user
+        join user_role on user.id = user_role.user_id
+        join role on user_role.role_id = role.id
+        join role_permission on role.id = role_permission.role_id
+        join permission on role_permission.permission_id = permission.id
+        where user.id = #{id};
+    </select>
 
+    <select id = "joinSelectLikes" resultType="com.contrue.po.User" parameterType = "com.contrue.po.User" actionType="select" openToken = "#{" closeToken = "}" >
+        select * from user
+        join likes on user.id = likes.user_id
+        where user.id = #{id};
+    </select>
+
+    <insert id = "insertNewUser" resultType = "com.contrue.po.User" parameterType = "com.contrue.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        insert into user (user_name,password,email,user_phone,user_address,age,gender) values(#{username},#{password},#{email},#{phone},#{address},#{age},#{gender})
+    </insert>
 
 </mapper>

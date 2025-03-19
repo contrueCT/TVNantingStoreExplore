@@ -7,7 +7,9 @@ import com.contrue.util.SystemLogger;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -29,14 +31,22 @@ public class ResultSetMapper {
         //获取主键字段
         String primaryKeyColumn = "id";
 
+        //有效返回字段
+        Set<String> availableColumns = getAvailableColumns(rs);
+
+        //确保主键列存在
+        if (!availableColumns.contains(primaryKeyColumn)) {
+            throw new IllegalArgumentException("主键列'"+primaryKeyColumn+"'在结果集中不存在");
+        }
+
         while(rs.next()){
             //主键值（id）
             int primaryKeyValue = rs.getInt(primaryKeyColumn);
             T mainObject = mainObjectMap.computeIfAbsent(primaryKeyValue,key -> createInstance(mainClazz));
             //处理简单字段
-            processSimpleField(rs,mainObject);
+            processSimpleField(rs,mainObject,availableColumns);
             //处理嵌套字段
-            processNestedObjects(rs,primaryKeyValue,nestedObjectMap,mainClazz);
+            processNestedObjects(rs,primaryKeyValue,nestedObjectMap,mainClazz,availableColumns);
 
         }
         //将嵌套对象集合封装到主对象中
@@ -63,7 +73,7 @@ public class ResultSetMapper {
      * 处理简单字段
      * @param mainObject 当前的主对象
      */
-    private <T> void processSimpleField(ResultSet rs, T mainObject) {
+    private <T> void processSimpleField(ResultSet resultSet, T mainObject, Set<String> availableColumns) {
         Class<?> mainObjectClass = mainObject.getClass();
 
         for(Field field : mainObjectClass.getDeclaredFields()){
@@ -76,14 +86,17 @@ public class ResultSetMapper {
             Column columnAnnotation = field.getAnnotation(Column.class);
             if(columnAnnotation != null){
                 String columnName = columnAnnotation.name();
-                try{
-                    Object value = rs.getObject(columnName);
-                    if(value != null){
-                        field.setAccessible(true);
-                        field.set(mainObject,value);
+                Class<?> targetType = field.getType();
+                //判断此字段是否有返回
+                try {
+                    if (availableColumns.contains(columnName)) {
+                        Object value = resultSet.getObject(columnName);
+                        if (value != null) {
+                            field.set(mainObject, value);
+                        }
                     }
                 } catch (Exception e) {
-                    SystemLogger.logError("映射简单字段失败",e);
+                    SystemLogger.logError(e.getMessage(),e);
                     throw new RuntimeException(e);
                 }
             }
@@ -95,7 +108,7 @@ public class ResultSetMapper {
      * @param primaryKeyValue 主键id
      * @param nestedObjectMap 嵌套集合map
      */
-    private void processNestedObjects(ResultSet resultSet,int primaryKeyValue,Map<Integer,Map<String,List<Object>>> nestedObjectMap,Class<?> mainClass) throws SQLException{
+    private void processNestedObjects(ResultSet resultSet, int primaryKeyValue, Map<Integer, Map<String, List<Object>>> nestedObjectMap, Class<?> mainClass, Set<String> availableColumns) throws SQLException{
         //获取或创建与该主键（id）对应的各个字段的列表map对象
         Map<String,List<Object>> fieldNestedObjects = nestedObjectMap.computeIfAbsent(primaryKeyValue,key -> new HashMap<>());
         //处理每个List类型字段
@@ -113,17 +126,31 @@ public class ResultSetMapper {
                     Class<?> nestedClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
                     //获取此字段的嵌套对象集合
                     List<Object> nestedList = fieldNestedObjects.computeIfAbsent(fieldName,key -> new ArrayList<>());
+
+                    //检查是否有该嵌套类的字段，如果没有直接跳过
+                    boolean hasRelevantColumns = false;
+                    for (Field nestedField : nestedClass.getDeclaredFields()) {
+                        Column column = nestedField.getAnnotation(Column.class);
+                        if (column != null && availableColumns.contains(column.name())) {
+                            hasRelevantColumns = true;
+                            break;
+                        }
+                    }
+
+                    // 如果没有相关列，跳过此嵌套对象的处理
+                    if (!hasRelevantColumns) {
+                        continue;
+                    }
+
                     //获取嵌套对象
                     Object nestedObject = createInstance(nestedClass);
 
-                    boolean hasData = processNestedObjectFields(resultSet,nestedObject,nestedClass);
-                    if(!hasData){
+                    boolean hasData = processNestedObjectFields(resultSet,nestedObject,nestedClass,availableColumns);
+                    if(hasData){
                         nestedList.add(nestedObject);
                     }
                 }
             }
-
-
         }
     }
 
@@ -133,7 +160,7 @@ public class ResultSetMapper {
      * @param nestedClass   嵌套对象的类型
      * @return  有没有数据被赋值
      */
-    private boolean processNestedObjectFields(ResultSet resultSet,Object nestedObject, Class<?> nestedClass) throws SQLException{
+    private boolean processNestedObjectFields(ResultSet resultSet,Object nestedObject, Class<?> nestedClass,Set<String> availableColumns) throws SQLException{
         boolean hasData = false;
         //遍历插入嵌套类中的字段
         for(Field field : nestedClass.getDeclaredFields()){
@@ -141,19 +168,23 @@ public class ResultSetMapper {
             if(field.getType() == List.class){
                 continue;
             }
+            Class<?> targetType = field.getType();
             //根据注解获取字段值
             Column columnAnnotation = field.getAnnotation(Column.class);
             if(columnAnnotation != null){
                 String columnName = columnAnnotation.name();
+                try {
+                    //判断是否返回了该字段
+                    if (availableColumns.contains(columnName)) {
+                        Object value = resultSet.getObject(columnName);
 
-                try{
-                    Object value = resultSet.getObject(columnName);
-                    if(value != null){
-                        field.set(nestedObject,value);
-                        hasData = true;
+                        if (value != null) {
+                            field.set(nestedObject, value);
+                            hasData = true;
+                        }
                     }
                 } catch (IllegalAccessException e) {
-                    SystemLogger.logError("封装嵌套对象时出错",e);
+                    SystemLogger.logError(e.getMessage(),e);
                     throw new RuntimeException(e);
                 }
             }
@@ -198,5 +229,17 @@ public class ResultSetMapper {
             }
 
         }
+    }
+
+    private Set<String> getAvailableColumns(ResultSet resultSet) throws SQLException {
+        Set<String> columns = new HashSet<>();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        for (int i = 1; i <= columnCount; i++) {
+            columns.add(metaData.getColumnLabel(i));
+        }
+
+        return columns;
     }
 }

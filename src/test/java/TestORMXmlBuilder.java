@@ -12,7 +12,7 @@ public class TestORMXmlBuilder {
     @Test
     public void TestResource(){
         Configuration config = new Configuration();
-        InputStream in = Resources.getResourceAsStream("UserMapper.xml");
+        InputStream in = Resources.getResourceAsStream("mapper/UserMapper.xml");
         System.out.println(in);
         XmlMapperBuilder builder = new XmlMapperBuilder(config);
         try {

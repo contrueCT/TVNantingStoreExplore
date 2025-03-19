@@ -19,16 +19,18 @@ import java.util.List;
 public class Store {
     @Column(name = "id")
     private Integer id;
-    @Column(name = "name")
+    @Column(name = "store_name")
     private String name;
-    @Column(name = "address")
+    @Column(name = "store_address")
     private String address;
-    @Column(name = "phone")
+    @Column(name = "store_phone")
     private String phone;
-    @Column(name = "description")
+    @Column(name = "store_description")
     private String description;
     @ForeignKey(name = "followers")
     private List<User> followers;
     @ForeignKey(name = "roles")
     private List<Role> roles;
+    @ForeignKey(name = "likes")
+    private List<Like> likes;
 }

@@ -8,12 +8,11 @@ import java.io.InputStream;
 
 public class SqlSessionFactoryBuilder {
 
-    public SqlSessionFactory build(InputStream inputStream) throws DocumentException {
+    public static SqlSessionFactory build(InputStream inputStream) throws DocumentException {
         Configuration configuration = new Configuration();
         XmlConfigBuilder xmlConfigBuilder = new XmlConfigBuilder(configuration);
         configuration = xmlConfigBuilder.parseConfig(inputStream);
-        DefaultSqlSessionFactory sqlSessionFactory = new DefaultSqlSessionFactory(configuration);
-        return sqlSessionFactory;
+        return new DefaultSqlSessionFactory(configuration);
     }
 
 }

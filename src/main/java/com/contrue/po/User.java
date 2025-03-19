@@ -22,7 +22,7 @@ public class User {
     @Column(name = "id")
     private Integer id;
     //用户名
-    @Column(name = "username")
+    @Column(name = "user_name")
     private String username;
     @Column(name = "password")
     private String password;
@@ -30,10 +30,10 @@ public class User {
     @Column(name = "email")
     private String email;
     //电话号码必填
-    @Column(name = "phone")
+    @Column(name = "user_phone")
     private String phone;
     //地址选填
-    @Column(name = "address")
+    @Column(name = "user_address")
     private String address;
     //年龄选填
     @Column(name = "age")
@@ -41,10 +41,8 @@ public class User {
     //性别选填
     @Column(name = "gender")
     private String gender;
-    @ForeignKey(name = "role")
-    private List<Role> roles;
-    @ForeignKey(name = "user")
-    private List<User> followers;
+    @ForeignKey(name = "likes")
+    private List<Like> likes;
     //多表查寻获得用户权限
     @ForeignKey(name = "permission")
     private List<Permission> permissions;

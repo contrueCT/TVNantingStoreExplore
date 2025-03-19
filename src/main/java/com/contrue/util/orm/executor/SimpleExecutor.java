@@ -41,6 +41,26 @@ public class SimpleExecutor implements Executor {
         }
     }
 
+    @Override
+    public int executeUpdate(Configuration config, String statementId, Object[] parameters, Connection connection) throws SQLException, NoSuchFieldException {
+        MappedStatement mappedStatement = config.getMappedStatement(statementId);
+        BoundSql boundSql = new BoundSql(mappedStatement);
+        String sql = boundSql.getSqlText();
+        //sql语句中解析出的原类参数名列表
+        List<String> parameterMapperList = boundSql.getParameterMapperList();
+        Class<?> parameterTypeClass = this.getClassType(mappedStatement.getParameters());
+        //获取返回值类型
+        Class<?> resultTypeClass = this.getClassType(mappedStatement.getResultType());
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            setParameters(preparedStatement,parameterMapperList,parameterTypeClass,parameters);
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
+            return rowsAffected;
+        }
+
+    }
+
+
     private <T> List<T> executeQuery(PreparedStatement preparedStatement, Class<T> resultType) throws SQLException {
         ResultSet resultSet = preparedStatement.executeQuery();
         ResultSetMapper resultSetMapper = new ResultSetMapper();

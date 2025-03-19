@@ -11,10 +11,11 @@ public interface Executor {
     /**
      * sql执行器
      * @param config 配置参数
-     * @param mappedStatement sql语句
      * @param parameters 参数
      * @return
      * @param <T>
      */
     <T> List<T> execute(Configuration config, String statementId, Object[] parameters, Connection connection) throws SQLException, NoSuchFieldException;
+
+    int executeUpdate(Configuration config, String statementId, Object[] parameters, Connection connection) throws SQLException, NoSuchFieldException;
 }

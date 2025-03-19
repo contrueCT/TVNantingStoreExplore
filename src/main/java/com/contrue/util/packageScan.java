@@ -7,8 +7,6 @@ import java.util.List;
  */
 public class packageScan {
 
-    public List<Object> search(String packagePath) {
 
-    }
 
 }

@@ -30,6 +30,7 @@ public class TestConnectionPool {
         Connection conn = MyDBConnection.getConnection();
         MyORM orm = new MyORMImpl();
         User selected = new User();
+        selected.setId(1);
         List<User> users = orm.select(conn,selected, SelectMethod.AND);
         System.out.println(users.get(0));
     }

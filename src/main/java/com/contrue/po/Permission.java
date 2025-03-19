@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "permission")
 public class Permission {
-    @Column(name = "id")
+    @Column(name = "permission_id")
     private Integer id;
-    @Column(name = "name")
+    @Column(name = "permission_name")
     private String name;
-    @Column(name = "description")
+    @Column(name = "permission_description")
     private String description;
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "role")
 public class Role {
     //角色名
-    @Column(name = "name")
+    @Column(name = "role_name")
     private String name;
     //角色id
     @Column(name = "id")
@@ -26,6 +26,6 @@ public class Role {
     //角色拥有的权限
     @ForeignKey(name = "permissions")
     private List<Permission> permissions;
-    @Column(name = "description")
+    @Column(name = "role_description")
     private String description;
 }

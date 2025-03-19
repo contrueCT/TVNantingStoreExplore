@@ -23,7 +23,7 @@ public class BoundSql {
         if(!(openIndex == -1)) {
             int closeIndex = sql.indexOf(closeToken, openIndex);
             if(!(closeIndex == -1)) {
-                map.put(closeIndex,openIndex);
+                map.put(openIndex, closeIndex);
                 findPosition = closeIndex + 1;
                 parseSqlText(sql);
             }
@@ -40,10 +40,13 @@ public class BoundSql {
             Integer key = entry.getKey()+2;
             Integer value = entry.getValue();
             //将解析出的参数名称（原类中的字段名）加入集合
+            System.out.println(sqlText);
+            System.out.println(value);
+            System.out.println(key);
             parameterMapperList.add(sqlText.substring(key,value));
         }
         for(String parameterMapper : parameterMapperList) {
-            sqlText = sqlText.replace("#{"+parameterMapper+"}","?");
+            sqlText = sqlText.replace(openToken+parameterMapper+closeToken,"?");
         }
     }
 }
