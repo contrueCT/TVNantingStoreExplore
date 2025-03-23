@@ -25,6 +25,8 @@ public class Store {
     private String address;
     @Column(name = "store_phone")
     private String phone;
+    @Column(name = "store_short_description")
+    private String shortDescription;
     @Column(name = "store_description")
     private String description;
     @ForeignKey(name = "followers")
@@ -33,4 +35,6 @@ public class Store {
     private List<Role> roles;
     @ForeignKey(name = "likes")
     private List<Like> likes;
+    @ForeignKey(name = "comments")
+    private List<Comment> comments;
 }
