@@ -43,6 +43,8 @@ public class User {
     private String gender;
     @ForeignKey(name = "likes")
     private List<Like> likes;
+    @ForeignKey(name = "role")
+    private List<Role> roles;
     //多表查寻获得用户权限
     @ForeignKey(name = "permission")
     private List<Permission> permissions;
