@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mapper namespace="com.contrue.mapper.UserMapper">
 
-    <select id = "list" resultType = "com.contrue.po.User" actionType = "select">
+    <select id = "list" resultType = "com.contrue.entity.po.User" actionType = "select">
         select * from user
     </select>
 
-    <select id = "findById" resultType="com.contrue.po.User" parameterType = "java.lang.Integer" actionType="select">
+    <select id = "findById" resultType="com.contrue.entity.po.User" parameterType = "java.lang.Integer" actionType="select">
         select * from user where id = #{id}
     </select>
 
-    <insert id = "insertNewUser" resultType = "com.contrue.po.User" parameterType = "com.contrue.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
-        insert into user (user_name,password,email,user_phone,user_address,age,gender) values (#{username},#{email},#{phone},#{address},#{age},#{gender})
+    <insert id = "insertNewUser" resultType = "com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        insert into user (user_name,password,email,user_phone,user_address,age,gender)
+        values (#{username},#{email},#{phone},#{address},#{age},#{gender})
     </insert>
 
 </mapper>

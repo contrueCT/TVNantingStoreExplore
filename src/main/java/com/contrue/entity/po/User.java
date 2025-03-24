@@ -1,4 +1,4 @@
-package com.contrue.po;
+package com.contrue.entity.po;
 
 import com.contrue.annotation.Column;
 import com.contrue.annotation.ForeignKey;
@@ -45,6 +45,8 @@ public class User {
     private List<Like> likes;
     @ForeignKey(name = "role")
     private List<Role> roles;
+    @ForeignKey(name = "comment")
+    private List<Comment> comments;
     //多表查寻获得用户权限
     @ForeignKey(name = "permission")
     private List<Permission> permissions;

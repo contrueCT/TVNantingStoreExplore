@@ -1,6 +1,6 @@
 package com.contrue.mapper;
 
-import com.contrue.po.User;
+import com.contrue.entity.po.User;
 
 import java.util.List;
 
@@ -17,4 +17,8 @@ public interface UserMapper {
     List<User> joinSelectPermission(User user);
 
     List<User> joinSelectLikes(User user);
+
+    List<User> findByUserName(User user);
+
+    List<User> joinSelectComment(User user);
 }

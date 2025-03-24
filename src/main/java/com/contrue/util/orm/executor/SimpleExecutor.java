@@ -31,7 +31,6 @@ public class SimpleExecutor implements Executor {
         try(PreparedStatement preparedStatement = conn.prepareStatement(sql)){
             setParameters(preparedStatement,parameterMapperList,parameterTypeClass,parameters);
             if (SELECT.equals(mappedStatement.getActionType())) {
-
                 return (List<T>) executeQuery (preparedStatement, resultTypeClass);
             } else {
                 int rowsAffected = preparedStatement.executeUpdate();

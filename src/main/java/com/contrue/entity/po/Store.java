@@ -1,4 +1,4 @@
-package com.contrue.po;
+package com.contrue.entity.po;
 
 import com.contrue.annotation.Column;
 import com.contrue.annotation.ForeignKey;
@@ -21,6 +21,8 @@ public class Store {
     private Integer id;
     @Column(name = "store_name")
     private String name;
+    @Column(name = "store_password")
+    private String password;
     @Column(name = "store_address")
     private String address;
     @Column(name = "store_phone")

@@ -1,4 +1,4 @@
-import com.contrue.po.User;
+import com.contrue.entity.po.User;
 import com.contrue.util.MyDBConnection;
 import com.contrue.util.orm.MyORM;
 import com.contrue.util.orm.MyORMImpl;

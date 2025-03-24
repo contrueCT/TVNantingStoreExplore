@@ -1,4 +1,4 @@
-package com.contrue.po;
+package com.contrue.entity.po;
 
 import com.contrue.annotation.Column;
 import com.contrue.annotation.Table;
@@ -14,20 +14,25 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "comment")
-public class Comment {
+@Table(name = "likes")
+public class Like {
     @Column(name = "id")
     private Integer id;
+    //点赞者的id
     @Column(name = "user_id")
     private Integer userId;
+    //被点赞的目标
     @Column(name = "target_id")
     private Integer targetId;
-    @Column(name = "user_name")
-    private String userName;
+    //商铺或评论
+    @Column(name = "target_type")
+    //目标类型（商铺或评论）
+    private String targetType;
     @Column(name = "target_name")
     private String targetName;
-    @Column(name = "content")
-    private String content;
+    @Column(name = "user_name")
+    private String userName;
+    //点赞创建时间
     @Column(name = "create_time")
     private LocalDateTime createTime;
 }

@@ -1,4 +1,4 @@
-package com.contrue.po;
+package com.contrue.entity.po;
 
 import com.contrue.annotation.Column;
 import com.contrue.annotation.Table;
