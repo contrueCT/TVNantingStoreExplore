@@ -27,7 +27,7 @@ Base URLs:
 
 - HTTP Authentication, scheme: bearer
 
-# NantingStoreExplore
+# NantingStoreExplore/用户
 
 ## POST 用户注册
 
@@ -84,76 +84,6 @@ POST /api/users/register
 |» data|object|true|none||none|
 |»» userId|integer|true|none||none|
 
-## DELETE 取消评论点赞
-
-DELETE /api/comments/{commentId}/like
-
-### 请求参数
-
-|名称|位置|类型|必选|中文名|说明|
-|---|---|---|---|---|---|
-|commentId|path|string| 是 ||none|
-
-> 返回示例
-
-> 200 Response
-
-```json
-{
-  "massage": "string"
-}
-```
-
-### 返回结果
-
-|状态码|状态码含义|说明|数据模型|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### 返回数据结构
-
-状态码 **200**
-
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|» massage|string|true|none|信息|信息|
-
-## POST 评论点赞
-
-POST /api/comments/{commentId}/like
-
-给评论点赞，需要验证
-
-### 请求参数
-
-|名称|位置|类型|必选|中文名|说明|
-|---|---|---|---|---|---|
-|commentId|path|string| 是 ||none|
-
-> 返回示例
-
-> 200 Response
-
-```json
-{
-  "massage": "string"
-}
-```
-
-### 返回结果
-
-|状态码|状态码含义|说明|数据模型|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### 返回数据结构
-
-状态码 **200**
-
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|» massage|string|true|none|信息|信息|
-
 ## POST 用户登录
 
 POST /api/users/login
@@ -206,41 +136,6 @@ POST /api/users/login
 |» data|object|true|none|数据|none|
 |»» token|string|true|none|Token|Token中包含subject(user:{id}),role,|
 
-## DELETE 删除评论
-
-DELETE /api/shops/{shopId}/comments/{commentId}
-
-### 请求参数
-
-|名称|位置|类型|必选|中文名|说明|
-|---|---|---|---|---|---|
-|shopId|path|string| 是 ||none|
-|commentId|path|number| 是 ||none|
-
-> 返回示例
-
-> 200 Response
-
-```json
-{
-  "massage": "string"
-}
-```
-
-### 返回结果
-
-|状态码|状态码含义|说明|数据模型|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### 返回数据结构
-
-状态码 **200**
-
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|» massage|string|true|none|信息|信息|
-
 ## GET 获取用户信息
 
 GET /api/users/me
@@ -251,8 +146,12 @@ GET /api/users/me
 
 ```json
 {
-  "likesNum": 0,
-  "commentsNum": 0
+  "massage": "string",
+  "code": 0,
+  "data": {
+    "likesNum": 0,
+    "commentsNum": 0
+  }
 }
 ```
 
@@ -268,18 +167,24 @@ GET /api/users/me
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|» likesNum|number|true|none|点赞数|none|
-|» commentsNum|number|true|none|评论数|none|
+|» massage|string|true|none||none|
+|» code|integer|true|none||none|
+|» data|object|true|none||none|
+|»» likesNum|integer|true|none|点赞数|none|
+|»» commentsNum|integer|true|none|评论数|none|
 
-## DELETE 取消商铺点赞
+# NantingStoreExplore/商铺
 
-DELETE /api/shops/{shopId}/like
+## DELETE 取消评论点赞
+
+DELETE /api/stores/{storeId}/comments/{commentId}/like
 
 ### 请求参数
 
 |名称|位置|类型|必选|中文名|说明|
 |---|---|---|---|---|---|
-|shopId|path|string| 是 ||none|
+|storeId|path|string| 是 ||none|
+|commentId|path|string| 是 ||none|
 
 > 返回示例
 
@@ -287,6 +192,7 @@ DELETE /api/shops/{shopId}/like
 
 ```json
 {
+  "code": 0,
   "massage": "string"
 }
 ```
@@ -303,19 +209,21 @@ DELETE /api/shops/{shopId}/like
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
+|» code|integer|true|none||none|
 |» massage|string|true|none|信息|信息|
 
-## GET 点赞商铺
+## POST 评论点赞
 
-GET /api/shops/{shopId}/like
+POST /api/stores/{storeId}/comments/{commentId}/like
 
-点赞商铺，需要验证身份
+给评论点赞，需要验证
 
 ### 请求参数
 
 |名称|位置|类型|必选|中文名|说明|
 |---|---|---|---|---|---|
-|shopId|path|string| 是 ||none|
+|storeId|path|string| 是 ||none|
+|commentId|path|string| 是 ||none|
 
 > 返回示例
 
@@ -323,7 +231,8 @@ GET /api/shops/{shopId}/like
 
 ```json
 {
-  "message": "string"
+  "code": 0,
+  "massage": "string"
 }
 ```
 
@@ -339,6 +248,172 @@ GET /api/shops/{shopId}/like
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» massage|string|true|none|信息|信息|
+
+## DELETE 删除评论
+
+DELETE /api/stores/{storeId}/comments/{commentId}
+
+### 请求参数
+
+|名称|位置|类型|必选|中文名|说明|
+|---|---|---|---|---|---|
+|storeId|path|string| 是 ||none|
+|commentId|path|number| 是 ||none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "massage": "string"
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» massage|string|true|none|信息|信息|
+
+## POST 商铺注册
+
+POST /api/stores/register
+
+> Body 请求参数
+
+```json
+{
+  "name": "Java炒粉",
+  "address": "广东省 广州市 番禺区 广东工业大学 西区门口",
+  "phone": "88349348340",
+  "shortDescription": "容条机及到。员发素会该点山际领。",
+  "description": "电技增立使日处。积子书基入。采市接始信律儿。决车约济。志王龙。",
+  "roles": "store"
+}
+```
+
+### 请求参数
+
+|名称|位置|类型|必选|中文名|说明|
+|---|---|---|---|---|---|
+|body|body|object| 否 ||none|
+|» name|body|string| 是 ||none|
+|» address|body|string| 是 ||none|
+|» phone|body|number| 是 ||none|
+|» shortDescription|body|string| 是 ||none|
+|» description|body|string| 是 ||none|
+|» roles|body|string| 是 ||none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "massage": "string"
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» massage|string|true|none||none|
+
+## DELETE 取消商铺点赞
+
+DELETE /api/stores/{storeId}/like
+
+### 请求参数
+
+|名称|位置|类型|必选|中文名|说明|
+|---|---|---|---|---|---|
+|storeId|path|string| 是 ||none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "massage": "string"
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» massage|string|true|none|信息|信息|
+
+## GET 点赞商铺
+
+GET /api/stores/{storeId}/like
+
+点赞商铺，需要验证身份
+
+### 请求参数
+
+|名称|位置|类型|必选|中文名|说明|
+|---|---|---|---|---|---|
+|storeId|path|string| 是 ||none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "message": "商铺点赞成功"
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
 |» message|string|true|none||none|
 
 ## GET 详细点赞记录
@@ -481,7 +556,7 @@ GET /api/users/me/comments
 
 ## GET 获取商铺列表
 
-GET /api/shops
+GET /api/stores
 
 获取商铺列表，无需登录验证，可选排序规则（点赞/评论）
 
@@ -497,18 +572,34 @@ GET /api/shops
 
 ```json
 {
-  "code": 0,
-  "message": "string",
+  "code": 200,
+  "message": "查询成功",
   "data": {
-    "totalStores": 0,
+    "totalStores": 3,
     "stores": [
       {
-        "id": 0,
-        "name": "string",
-        "address": "string",
-        "shortDescription": "string",
-        "likesCount": 0,
-        "commentsCount": 0
+        "id": 1001,
+        "name": "C++炒面",
+        "address": "广东工业大学西生活区门口",
+        "shortDescription": "百年老字号，正宗C++技艺传承",
+        "likesCount": 156,
+        "commentsCount": 42
+      },
+      {
+        "id": 1002,
+        "name": "Java炒粉",
+        "address": "广东工业大学西生活区外天桥下",
+        "shortDescription": "全中国唯一的附赠咖啡的炒粉店",
+        "likesCount": 89,
+        "commentsCount": 23
+      },
+      {
+        "id": 1003,
+        "name": "python炒饭",
+        "address": "广东工业大学西生活区旁",
+        "shortDescription": "平价美味，蟒蛇特色小吃齐全",
+        "likesCount": 210,
+        "commentsCount": 67
       }
     ]
   }
@@ -541,7 +632,7 @@ GET /api/shops
 
 ## GET 获取商铺详细信息
 
-GET /api/shops/{shopId}
+GET /api/stores/{storeId}
 
 获取商铺详细信息，无需登录验证
 
@@ -549,7 +640,7 @@ GET /api/shops/{shopId}
 
 |名称|位置|类型|必选|中文名|说明|
 |---|---|---|---|---|---|
-|shopId|path|string| 是 ||none|
+|storeId|path|string| 是 ||none|
 
 > 返回示例
 
@@ -655,7 +746,7 @@ GET /api/shops/{shopId}
 
 ## POST 评论商铺
 
-POST /api/shops/{shopId}/comments
+POST /api/stores/{storeId}/comments
 
 评论商铺，需要验证身份
 
@@ -671,7 +762,7 @@ POST /api/shops/{shopId}/comments
 
 |名称|位置|类型|必选|中文名|说明|
 |---|---|---|---|---|---|
-|shopId|path|string| 是 ||none|
+|storeId|path|string| 是 ||none|
 |body|body|object| 否 ||none|
 |» comment|body|string| 是 | 评论|none|
 
@@ -681,6 +772,7 @@ POST /api/shops/{shopId}/comments
 
 ```json
 {
+  "code": 0,
   "massage": "string"
 }
 ```
@@ -697,7 +789,96 @@ POST /api/shops/{shopId}/comments
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
+|» code|integer|true|none||none|
 |» massage|string|true|none||none|
+
+## POST 商铺登录
+
+POST /api/stores/login
+
+> Body 请求参数
+
+```json
+{
+  "name": "string",
+  "password": "string"
+}
+```
+
+### 请求参数
+
+|名称|位置|类型|必选|中文名|说明|
+|---|---|---|---|---|---|
+|body|body|object| 否 ||none|
+|» name|body|string| 是 | 名字|名称|
+|» password|body|string| 是 | 密码|none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "massage": "string",
+  "data": {
+    "token": "string"
+  }
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» massage|string|true|none||none|
+|» data|object|true|none||none|
+|»» token|string|true|none||none|
+
+## POST 修改商铺信息
+
+POST /api/stores/{storeId}/update
+
+### 请求参数
+
+|名称|位置|类型|必选|中文名|说明|
+|---|---|---|---|---|---|
+|storeId|path|string| 是 ||none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "massage": "string"
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||状态码|
+|» massage|string|true|none||响应信息|
 
 # 数据模型
 
