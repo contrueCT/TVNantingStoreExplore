@@ -18,39 +18,58 @@ import java.util.List;
  */
 public class StoreDAOImpl implements StoreDAO {
 
-    StoreMapper storeMapper;
-    Connection conn;
-    StoreRoleMapper storeRoleMapper;
+    private static class SingletonHolder {
+        private static final StoreDAO INSTANCE = new StoreDAOImpl();
+    }
 
-    public StoreDAOImpl(Connection conn) {
-        this.conn = conn;
-        try {
-            SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.build(Resources.getResourceAsStream("batis-config.xml"));
-            SqlSession sqlSession = sqlSessionFactory.openSession();
-            storeMapper = sqlSession.getMapper(StoreMapper.class,conn);
-            storeRoleMapper = sqlSession.getMapper(StoreRoleMapper.class,conn);
-            if(storeMapper==null||storeRoleMapper==null){
-                throw new RuntimeException("mapper获取失败");
-            }
-        } catch (Exception e) {
+    public static StoreDAO getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    private StoreDAOImpl(){}
+
+    private static SqlSessionFactory sqlSessionFactory;
+    private static SqlSession sqlSession;
+
+    static{
+        try{
+            sqlSessionFactory = SqlSessionFactoryBuilder.build(Resources.getResourceAsStream("batis-config.xml"));
+            sqlSession = sqlSessionFactory.openSession();
+        }catch(Exception e){
             throw new RuntimeException(e);
         }
     }
 
+    private StoreMapper getStoreMapper(Connection conn){
+        try {
+            return sqlSession.getMapper(StoreMapper.class, conn);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 
-
-    @Override
-    public List<Store> getAllStores() {
-        return storeMapper.selectAllStore();
+    private StoreRoleMapper getStoreRoleMapper(Connection conn){
+        try{
+            return sqlSession.getMapper(StoreRoleMapper.class,conn);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public Store getStoreById(Store store) {
-        return storeMapper.selectStoreById(store).get(0);
+    public List<Store> getAllStores(Connection conn) {
+        return getStoreMapper(conn).selectAllStore();
     }
 
     @Override
-    public boolean addStore(Store store) {
+    public Store getStoreById(Store store, Connection conn) {
+        return getStoreMapper(conn).selectStoreById(store).get(0);
+    }
+
+    @Override
+    public boolean addStore(Store store,Connection conn) {
+        StoreMapper storeMapper = getStoreMapper(conn);
+        StoreRoleMapper storeRoleMapper = getStoreRoleMapper(conn);
         if(storeMapper.insertStore(store)>0){
             Store checkStore = storeMapper.selectStoreByName(store).get(0);
             if(checkStore!=null){
@@ -62,7 +81,7 @@ public class StoreDAOImpl implements StoreDAO {
     }
 
     @Override
-    public boolean updateStore(Store store) {
-        return storeMapper.updateStore(store)>0;
+    public boolean updateStore(Store store,Connection conn) {
+        return getStoreMapper(conn).updateStore(store)>0;
     }
 }

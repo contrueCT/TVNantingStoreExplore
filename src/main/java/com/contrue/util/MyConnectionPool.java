@@ -74,8 +74,9 @@ public class MyConnectionPool {
 
     //获取连接，通过instance
     public synchronized Connection getConnection() throws SQLException, InterruptedException {
-        if(connectionPool.isEmpty()){
-            throw new SQLException("已无空闲连接池，获取失败");
+        //如果连接池为空则等待
+        while (connectionPool.isEmpty()) {
+            wait();
         }
         Connection conn = connectionPool.take();
         return this.createProxyConnection(conn,this);
@@ -87,6 +88,8 @@ public class MyConnectionPool {
             try{
                 if(!conn.isClosed()){
                     connectionPool.add(conn);
+                    //释放连接时通知其他等待的线程
+                    notifyAll();
                 }
             } catch (SQLException e) {
                 SystemLogger.logError("连接回收失败",e);

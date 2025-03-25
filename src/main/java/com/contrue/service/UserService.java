@@ -5,6 +5,7 @@ import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Permission;
 import com.contrue.entity.po.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -12,15 +13,15 @@ import java.util.List;
  */
 public interface UserService {
 
-    boolean registerUser(User user);
+    boolean registerUser(User user) throws SQLException;
 
-    boolean loginUser(User user);
+    boolean loginUser(User user) throws SQLException;
 
-    List<Like> checkOwnLikes(User user);
+    List<Like> checkOwnLikes(User user) throws SQLException;
 
-    List<Comment> checkOwnComments(User user);
+    List<Comment> checkOwnComments(User user) throws SQLException;
 
-    User checkUserInfo(User user);
+    User checkUserInfo(User user) throws SQLException;
 
-    List<Permission> checkUserPermissions(User user);
+    List<Permission> checkUserPermissions(User user) throws SQLException;
 }
