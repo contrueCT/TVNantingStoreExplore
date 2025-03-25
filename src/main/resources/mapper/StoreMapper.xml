@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.contrue.mapper.StoreMapper">
+
+    <insert id = "insertStore" parameterType = "com.contrue.entity.po.Store" actionType = "update" openToken = "#{" closeToken = "}" >
+        insert into store (store_name,store_password,store_phone,store_short_description,store_description)
+        values (#{name},#{password},#{phone},#{shortDescription},#{description})
+
+    </insert>
+
+    <update id = "updateStore" parameterType = "com.contrue.entity.po.Store" actionType = "update" openToken = "#{" closeToken = "}">
+        update store set
+        store_name = #{name},
+        store_password = #{password},
+        store_phone = #{phone},
+        store_short_description = #{shortDescription},
+        store_description = #{description}
+        where id = #{id};
+    </update>
+
+    <select id = "findById" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
+        select * from user where id = #{id};
+    </select>
+
+    <select id = "listAllStore" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
+        select * from store;
+    </select>
+
+    <select id = "findByName" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
+        select * from user where store_name = #{name};
+    </select>
+
+</mapper>

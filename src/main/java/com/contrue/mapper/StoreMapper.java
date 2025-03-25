@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface StoreMapper {
 
-    List<Store> selectAllStore();
+    List<Store> listAllStore(Store store);
 
-    List<Store> selectStoreById(Store store);
+    List<Store> findById(Store store);
 
-    List<Store> selectStoreByName(Store store);
+    List<Store> findByName(Store store);
 
     int insertStore(Store store);
 

@@ -48,8 +48,6 @@ public class SimpleExecutor implements Executor {
         //sql语句中解析出的原类参数名列表
         List<String> parameterMapperList = boundSql.getParameterMapperList();
         Class<?> parameterTypeClass = this.getClassType(mappedStatement.getParameters());
-        //获取返回值类型
-        Class<?> resultTypeClass = this.getClassType(mappedStatement.getResultType());
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             setParameters(preparedStatement,parameterMapperList,parameterTypeClass,parameters);
             int rowsAffected = preparedStatement.executeUpdate();

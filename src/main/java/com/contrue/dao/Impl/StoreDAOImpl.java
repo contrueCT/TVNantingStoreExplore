@@ -58,12 +58,12 @@ public class StoreDAOImpl implements StoreDAO {
 
     @Override
     public List<Store> getAllStores(Connection conn) {
-        return getStoreMapper(conn).selectAllStore();
+        return getStoreMapper(conn).listAllStore(new Store());
     }
 
     @Override
     public Store getStoreById(Store store, Connection conn) {
-        return getStoreMapper(conn).selectStoreById(store).get(0);
+        return getStoreMapper(conn).findById(store).get(0);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class StoreDAOImpl implements StoreDAO {
         StoreMapper storeMapper = getStoreMapper(conn);
         StoreRoleMapper storeRoleMapper = getStoreRoleMapper(conn);
         if(storeMapper.insertStore(store)>0){
-            Store checkStore = storeMapper.selectStoreByName(store).get(0);
+            Store checkStore = storeMapper.findByName(store).get(0);
             if(checkStore!=null){
                 StoreRole storeRole = new StoreRole(store.getRoles().get(0).getId(),checkStore.getId());
                 return storeRoleMapper.insert(storeRole)>0;
