@@ -1,5 +1,5 @@
 create table permission(
                            id int not null unique primary key auto_increment,
-                           permission_name varchar(50) not null unique,
-                           permission_description varchar(70)
+                           method VARCHAR(10) not null,
+                           url VARCHAR(200) not null
 )comment "权限表";

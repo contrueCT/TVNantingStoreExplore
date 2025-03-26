@@ -9,6 +9,7 @@ import com.contrue.entity.po.User;
 import com.contrue.service.UserService;
 import com.contrue.util.MyDBConnection;
 import com.contrue.util.SystemLogger;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
             if(user.getUsername()==null||user.getPassword()==null||user.getPhone()==null||user.getRoles()==null){
                 return false;
             }
+            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             User existThisUser = userDAO.findByName(user,conn);
             if(existThisUser!=null){
                 return false;
@@ -81,7 +83,7 @@ public class UserServiceImpl implements UserService {
                 return null;
             }
             conn.commit();
-            if(checkUser.getPassword().equals(user.getPassword())){
+            if(BCrypt.checkpw(user.getPassword(),checkUser.getPassword())){
                 return checkUser.getId();
             }
             return null;

@@ -13,13 +13,17 @@ import java.util.List;
  */
 public interface UserService {
 
+    /**
+     * 注册，此处的密码要加密
+     * @param user 带有原始密码的user对象
+     * @return 是否注册成功
+     */
     boolean registerUser(User user) throws SQLException;
 
     /**
-     * 登录
-     * @param user 用户名和密码
+     * 登录，此处的密码不能加密
+     * @param user 用户名和原始密码
      * @return 如果user信息有误就返回null，否则返回该用户的id
-     * @throws SQLException
      */
     Integer loginUser(User user) throws SQLException;
 

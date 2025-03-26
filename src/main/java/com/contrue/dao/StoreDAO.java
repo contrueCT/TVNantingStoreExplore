@@ -11,7 +11,9 @@ import java.util.List;
 public interface StoreDAO {
     List<Store> getAllStores(Connection conn);
 
-    Store getStoreById(Store store,Connection conn);
+    Store findById(Store store, Connection conn);
+
+    Store findByName(Store store, Connection conn);
 
     //先插入，再查询，再插入Store_role
     boolean addStore(Store store,Connection conn);

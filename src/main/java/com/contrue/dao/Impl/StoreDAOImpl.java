@@ -3,8 +3,10 @@ package com.contrue.dao.Impl;
 import com.contrue.dao.StoreDAO;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.po.StoreRole;
+import com.contrue.entity.po.User;
 import com.contrue.mapper.StoreMapper;
 import com.contrue.mapper.StoreRoleMapper;
+import com.contrue.mapper.UserMapper;
 import com.contrue.util.orm.Resources;
 import com.contrue.util.orm.session.SqlSession;
 import com.contrue.util.orm.session.SqlSessionFactory;
@@ -62,8 +64,18 @@ public class StoreDAOImpl implements StoreDAO {
     }
 
     @Override
-    public Store getStoreById(Store store, Connection conn) {
+    public Store findById(Store store, Connection conn) {
         return getStoreMapper(conn).findById(store).get(0);
+    }
+
+    @Override
+    public Store findByName(Store store, Connection conn) {
+        StoreMapper storeMapper = getStoreMapper(conn);
+        List<Store> findStore = storeMapper.findByName(store);
+        if(findStore!=null&& !findStore.isEmpty()){
+            return findStore.get(0);
+        }
+        return null;
     }
 
     @Override
