@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 public class Permission {
     @Column(name = "permission_id")
     private Integer id;
-    @Column(name = "permission_name")
-    private String name;
-    @Column(name = "permission_description")
-    private String description;
+    @Column(name = "method")
+    private String method;
+    @Column(name = "url")
+    private String url;
 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
     <mapper resource = "mapper/UserMapper.xml"></mapper>
+    <mapper resource = "mapper/UserRoleMapper.xml"></mapper>
+    <mapper resource="mapper/StoreRoleMapper.xml"></mapper>
+    <mapper resource="mapper/LikeMapper.xml"></mapper>
+    <mapper resource="mapper/CommentMapper.xml"></mapper>
+    <mapper resource="mapper/StoreMapper.xml"></mapper>
 
 </configuration>

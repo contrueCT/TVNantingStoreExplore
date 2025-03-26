@@ -2,7 +2,6 @@ package com.contrue.dao.Impl;
 
 import com.contrue.dao.UserDAO;
 import com.contrue.entity.po.*;
-import com.contrue.mapper.StoreMapper;
 import com.contrue.mapper.UserMapper;
 import com.contrue.mapper.UserRoleMapper;
 import com.contrue.util.orm.Resources;
@@ -65,7 +64,7 @@ public class UserDAOImpl implements UserDAO {
             User checkUser = userMapper.findByUserName(user).get(0);
             if(checkUser!=null&&checkUser.getId()!=null){
                 UserRole userRole = new UserRole(checkUser.getId(), user.getRoles().get(0).getId());
-                return userRoleMapper.insertUserRole(userRole)>0;
+                return userRoleMapper.insert(userRole)>0;
             }
         }
         return false;
@@ -80,25 +79,29 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findByName(User user,Connection conn) {
         UserMapper userMapper = getUserMapper(conn);
-        return userMapper.findByUserName(user).get(0);
+        List<User> findUsers = userMapper.findByUserName(user);
+        if(findUsers!=null&& !findUsers.isEmpty()){
+            return findUsers.get(0);
+        }
+        return null;
     }
 
     @Override
-    public List<Permission> getUserPermission(User user,Connection conn) {
+    public List<Permission> getUserPermissionId(User user, Connection conn) {
         UserMapper userMapper = getUserMapper(conn);
         User checkUser = userMapper.joinSelectPermission(user).get(0);
         return checkUser.getPermissions();
     }
 
     @Override
-    public List<Like> getUserLikes(User user,Connection conn) {
+    public List<Like> getUserLikesId(User user, Connection conn) {
         UserMapper userMapper = getUserMapper(conn);
         User checkUser = userMapper.joinSelectLikes(user).get(0);
         return checkUser.getLikes();
     }
 
     @Override
-    public List<Comment> getUserComments(User user,Connection conn) {
+    public List<Comment> getUserCommentsById(User user, Connection conn) {
         UserMapper userMapper = getUserMapper(conn);
         User checkUser = userMapper.joinSelectComment(user).get(0);
         return checkUser.getComments();

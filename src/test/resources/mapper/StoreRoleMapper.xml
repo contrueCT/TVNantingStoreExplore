@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.contrue.mapper.StoreRoleMapper">
+
+    <insert id = "insert" parameterType = "com.contrue.entity.po.StoreRole" actionType = "update" openToken = "#{" closeToken = "}" >
+        insert into store_role (role_id,store_id)
+        values(#{roleId},#{storeId});
+    </insert>
+
+</mapper>

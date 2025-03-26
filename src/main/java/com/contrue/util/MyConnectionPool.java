@@ -74,22 +74,29 @@ public class MyConnectionPool {
 
     //获取连接，通过instance
     public synchronized Connection getConnection() throws SQLException, InterruptedException {
-        //如果连接池为空则等待
-        while (connectionPool.isEmpty()) {
-            wait();
+        try {
+            //如果连接池为空则等待
+            while (connectionPool.isEmpty()) {
+                wait();
+            }
+            Connection conn = connectionPool.take();
+            return this.createProxyConnection(conn,this);
+        } catch (Exception e) {
+            SystemLogger.logError("连接关闭失败",e);
+            throw e;
         }
-        Connection conn = connectionPool.take();
-        return this.createProxyConnection(conn,this);
     }
 
+    private final Object lock = new Object();
     //释放连接
     public void releaseConnection(Connection conn) {
         if (conn != null) {
             try{
                 if(!conn.isClosed()){
-                    connectionPool.add(conn);
-                    //释放连接时通知其他等待的线程
-                    notifyAll();
+                    synchronized (lock) {
+                        connectionPool.add(conn);
+                        lock.notifyAll(); // 使用显式锁对象
+                    }
                 }
             } catch (SQLException e) {
                 SystemLogger.logError("连接回收失败",e);

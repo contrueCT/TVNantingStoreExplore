@@ -8,6 +8,7 @@ import com.contrue.entity.po.Permission;
 import com.contrue.entity.po.User;
 import com.contrue.service.UserService;
 import com.contrue.util.MyDBConnection;
+import com.contrue.util.SystemLogger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -51,7 +52,8 @@ public class UserServiceImpl implements UserService {
             if(conn!=null){
                 conn.rollback();
             }
-            throw new RuntimeException(e);
+            SystemLogger.logError(e.getMessage(),e);
+            throw e;
         }finally {
             if (conn != null) {
                 conn.setAutoCommit(true);
@@ -61,25 +63,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean loginUser(User user) throws SQLException {
+    public Integer loginUser(User user) throws SQLException {
         UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
         try {
             //非空校验
             if(user==null){
-                return false;
+                return null;
             }
             if(user.getUsername()==null||user.getPassword()==null){
-                return false;
+                return null;
             }
             //获取数据库中的用户数据
             User checkUser = userDAO.findByName(user,conn);
             if(checkUser==null){
-                return false;
+                return null;
             }
             conn.commit();
-            return checkUser.getPassword().equals(user.getPassword());
+            if(checkUser.getPassword().equals(user.getPassword())){
+                return checkUser.getId();
+            }
+            return null;
         } catch (Exception e) {
             if(conn!=null){
                 conn.rollback();
@@ -94,7 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Like> checkOwnLikes(User user) throws SQLException {
+    public List<Like> checkOwnLikesById(User user) throws SQLException {
         UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
@@ -103,7 +108,7 @@ public class UserServiceImpl implements UserService {
             if(user==null){
                 return Collections.emptyList();
             }
-            List<Like> likes = userDAO.getUserLikes(user,conn);
+            List<Like> likes = userDAO.getUserLikesId(user,conn);
             if(likes==null){
                 return Collections.emptyList();
             }
@@ -123,7 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Comment> checkOwnComments(User user) throws SQLException {
+    public List<Comment> checkOwnCommentsById(User user) throws SQLException {
         UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
@@ -132,7 +137,7 @@ public class UserServiceImpl implements UserService {
             if(user==null){
                 return Collections.emptyList();
             }
-            List<Comment> comments = userDAO.getUserComments(user,conn);
+            List<Comment> comments = userDAO.getUserCommentsById(user,conn);
             if(comments==null){
                 return Collections.emptyList();
             }
@@ -152,7 +157,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User checkUserInfo(User user) throws SQLException {
+    public User checkUserInfoById(User user) throws SQLException {
         UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
@@ -181,7 +186,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Permission> checkUserPermissions(User user) throws SQLException {
+    public List<Permission> checkUserPermissionsById(User user) throws SQLException {
         UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
@@ -189,7 +194,7 @@ public class UserServiceImpl implements UserService {
             if(user==null){
                 return Collections.emptyList();
             }
-            List<Permission> permissions = userDAO.getUserPermission(user,conn);
+            List<Permission> permissions = userDAO.getUserPermissionId(user,conn);
             if(permissions==null){
                 return Collections.emptyList();
             }

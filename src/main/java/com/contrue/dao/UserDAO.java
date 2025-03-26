@@ -15,10 +15,10 @@ public interface UserDAO {
 
     User findByName(User user,Connection conn);
 
-    List<Permission> getUserPermission(User user,Connection conn);
+    List<Permission> getUserPermissionId(User user, Connection conn);
 
-    List<Like> getUserLikes(User user,Connection conn);
+    List<Like> getUserLikesId(User user, Connection conn);
 
-    List<Comment> getUserComments(User user,Connection conn);
+    List<Comment> getUserCommentsById(User user, Connection conn);
 
 }

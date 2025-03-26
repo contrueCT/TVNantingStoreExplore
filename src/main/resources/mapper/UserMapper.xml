@@ -7,7 +7,7 @@
 
     <insert id = "insertNewUser" resultType = "com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
         insert into user (user_name,password,email,user_phone,user_address,age,gender)
-        values (#{username},#{email},#{phone},#{address},#{age},#{gender})
+        values (#{username},#{password},#{email},#{phone},#{address},#{age},#{gender})
     </insert>
 
     <select id = "joinSelectLikes" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.contrue.mapper.CommentMapper">
+
+    <insert id = "insert" parameterType = "com.contrue.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}" >
+        insert into like (user_id,target_id,target_Type,target_name,user_name)
+        values(#{userId},#{targetId},#{targetType},#{TargetName},#{userName})
+    </insert>
+
+    <delete id = "deleteById" parameterType = "com.contrue.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}">
+        delete from like where id = #{id}
+    </delete>
+
+</mapper>

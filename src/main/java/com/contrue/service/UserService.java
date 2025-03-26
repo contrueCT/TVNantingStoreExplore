@@ -15,13 +15,19 @@ public interface UserService {
 
     boolean registerUser(User user) throws SQLException;
 
-    boolean loginUser(User user) throws SQLException;
+    /**
+     * 登录
+     * @param user 用户名和密码
+     * @return 如果user信息有误就返回null，否则返回该用户的id
+     * @throws SQLException
+     */
+    Integer loginUser(User user) throws SQLException;
 
-    List<Like> checkOwnLikes(User user) throws SQLException;
+    List<Like> checkOwnLikesById(User user) throws SQLException;
 
-    List<Comment> checkOwnComments(User user) throws SQLException;
+    List<Comment> checkOwnCommentsById(User user) throws SQLException;
 
-    User checkUserInfo(User user) throws SQLException;
+    User checkUserInfoById(User user) throws SQLException;
 
-    List<Permission> checkUserPermissions(User user) throws SQLException;
+    List<Permission> checkUserPermissionsById(User user) throws SQLException;
 }

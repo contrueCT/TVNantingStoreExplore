@@ -6,6 +6,6 @@ import com.contrue.entity.po.UserRole;
  * @author confff
  */
 public interface UserRoleMapper {
-    int insertUserRole(UserRole userRole);
+    int insert(UserRole userRole);
 
 }

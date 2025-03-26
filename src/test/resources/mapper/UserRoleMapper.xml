@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.contrue.mapper.UserRoleMapper">
+
+    <insert id = "insert" parameterType = "com.contrue.entity.po.UserRole" actionType = "update" openToken = "#{" closeToken = "}" >
+        insert into user_role (user_id,role_id)
+        values(#{userId},#{roleId});
+    </insert>
+
+</mapper>

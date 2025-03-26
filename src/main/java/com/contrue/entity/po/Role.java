@@ -6,6 +6,8 @@ import com.contrue.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,4 +30,12 @@ public class Role {
     private List<Permission> permissions;
     @Column(name = "role_description")
     private String description;
+
+    public static List<Role> getNormalUserRoleList(){
+        Role role = new Role();
+        role.setId(1);
+        List<Role> roles = new ArrayList<Role>();
+        roles.add(role);
+        return roles;
+    }
 }

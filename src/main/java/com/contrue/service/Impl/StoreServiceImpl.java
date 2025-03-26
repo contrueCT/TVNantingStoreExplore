@@ -75,6 +75,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public boolean addStore(Store store) throws SQLException {
         Connection conn = MyDBConnection.getConnection();
+        conn.setAutoCommit(false);
         try {
             if(store==null){
                 return false;

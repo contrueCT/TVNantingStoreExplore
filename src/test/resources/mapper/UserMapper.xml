@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mapper namespace="com.contrue.mapper.UserMapper">
 
-    <select id = "list" resultType = "com.contrue.entity.po.User" actionType = "select">
-        select * from user
+    <select id = "findById" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken="#{" closeToken="}">
+        select * from user where id = #{id}
     </select>
 
-    <select id = "findById" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
-        select * from user where id = #{id}
+    <insert id = "insertNewUser" resultType = "com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        insert into user (user_name,password,email,user_phone,user_address,age,gender)
+        values (#{username},#{password},#{email},#{phone},#{address},#{age},#{gender})
+    </insert>
+
+    <select id = "joinSelectLikes" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
+        select * from user
+        join likes on user.id = likes.user_id
+        where user.id = #{id};
     </select>
 
     <select id = "joinSelectPermission" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
@@ -18,14 +25,16 @@
         where user.id = #{id};
     </select>
 
-    <select id = "joinSelectLikes" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
+    <select id = "findByUserName" resultType="com.contrue.entity.po.User" parameterType="com.contrue.entity.po.User" actionType="select" openToken="#{" closeToken="}">
+        select * from user where user_name = #{username};
+    </select>
+
+    <select id = "joinSelectComment" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
         select * from user
-        join likes on user.id = likes.user_id
+        join comment on user.id = comment.user_id
         where user.id = #{id};
     </select>
 
-    <insert id = "insertNewUser" resultType = "com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
-        insert into user (user_name,password,email,user_phone,user_address,age,gender) values(#{username},#{password},#{email},#{phone},#{address},#{age},#{gender})
-    </insert>
+
 
 </mapper>
