@@ -27,6 +27,59 @@ Base URLs:
 
 - HTTP Authentication, scheme: bearer
 
+# NantingStoreExplore
+
+## POST 刷新访问令牌
+
+POST /api/auth/refresh
+
+> Body 请求参数
+
+```json
+{
+  "refreshToken": "string"
+}
+```
+
+### 请求参数
+
+|名称|位置|类型|必选|中文名|说明|
+|---|---|---|---|---|---|
+|body|body|object| 否 ||none|
+|» refreshToken|body|string| 是 | 刷新令牌|none|
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "accessToken": "string"
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» accessToken|string|true|none||none|
+
+状态码 **401**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» error|string|true|none||none|
+|» error_description|string|true|none||none|
+
 # NantingStoreExplore/用户
 
 ## POST 用户注册
@@ -111,11 +164,10 @@ POST /api/users/login
 
 ```json
 {
-  "code": 200,
-  "message": "Login successful",
-  "data": {
-    "token": "JWT_TOKEN_HERE"
-  }
+  "statusCode": 0,
+  "message": "string",
+  "accessToken": "string",
+  "refreshToken": "string"
 }
 ```
 
@@ -131,10 +183,10 @@ POST /api/users/login
 
 |名称|类型|必选|约束|中文名|说明|
 |---|---|---|---|---|---|
-|» code|integer|true|none||none|
+|» statusCode|integer|true|none||none|
 |» message|string|true|none|响应信息|none|
-|» data|object|true|none|数据|none|
-|»» token|string|true|none|Token|Token中包含subject(user:{id}),role,|
+|» accessToken|string|true|none||none|
+|» refreshToken|string|true|none||none|
 
 ## GET 获取用户信息
 
@@ -172,6 +224,144 @@ GET /api/users/me
 |» data|object|true|none||none|
 |»» likesNum|integer|true|none|点赞数|none|
 |»» commentsNum|integer|true|none|评论数|none|
+
+## GET 详细点赞记录
+
+GET /api/users/me/likes
+
+返回点赞记录列表，根据token中的user:id获取用户点赞记录
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "data": {
+    "userId": 0,
+    "userName": "string",
+    "totalLikes": 0,
+    "likes": [
+      {
+        "id": 0,
+        "userId": 0,
+        "targetId": 0,
+        "targetType": "string",
+        "targetName": "string",
+        "userName": "string",
+        "createTime": "string"
+      }
+    ]
+  }
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» message|string|true|none||none|
+|» data|object|true|none||none|
+|»» userId|integer|true|none||none|
+|»» userName|string|true|none||none|
+|»» totalLikes|integer|true|none||none|
+|»» likes|[object]|true|none||none|
+|»»» id|integer|true|none||none|
+|»»» userId|integer|true|none||none|
+|»»» targetId|integer|true|none||none|
+|»»» targetType|string|true|none||none|
+|»»» targetName|string|true|none||none|
+|»»» userName|string|true|none||none|
+|»»» createTime|string|true|none||none|
+
+## GET 获取详细评论信息
+
+GET /api/users/me/comments
+
+返回用户自己的评论记录列表，根据token中的user:id获取用户评论记录
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "code": 200,
+  "message": "查询成功",
+  "data": {
+    "userId": 10086,
+    "userName": "contrueCT",
+    "totalComments": 3,
+    "comments": [
+      {
+        "id": 1001,
+        "userId": 10086,
+        "targetId": 5001,
+        "userName": "contrueCT",
+        "targetName": "C++炒面",
+        "content": "这家店的炒面非常正宗，下次还会再来！",
+        "createTime": "2025-03-20T14:30:25"
+      },
+      {
+        "id": 1002,
+        "userId": 10086,
+        "targetId": 5002,
+        "userName": "contrueCT",
+        "targetName": "Java炒粉",
+        "content": "物美价廉，份量十足，是我的常去之处。",
+        "createTime": "2025-03-21T18:15:32"
+      },
+      {
+        "id": 1003,
+        "userId": 10086,
+        "targetId": 5003,
+        "userName": "contrueCT",
+        "targetName": "python炒饭",
+        "content": "食材简单朴素，但是味道很好，就是出餐有点慢。",
+        "createTime": "2025-03-22T02:45:18"
+      }
+    ]
+  }
+}
+```
+
+### 返回结果
+
+|状态码|状态码含义|说明|数据模型|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+
+### 返回数据结构
+
+状态码 **200**
+
+|名称|类型|必选|约束|中文名|说明|
+|---|---|---|---|---|---|
+|» code|integer|true|none||none|
+|» message|string|true|none||none|
+|» data|object|true|none||none|
+|»» userId|integer|true|none||none|
+|»» userName|string|true|none||none|
+|»» totalComments|integer|true|none||none|
+|»» comments|[object]|true|none||none|
+|»»» id|integer|true|none||none|
+|»»» userId|integer|true|none||none|
+|»»» targetId|integer|true|none||none|
+|»»» userName|string|true|none||none|
+|»»» targetName|string|true|none||none|
+|»»» content|string|true|none||none|
+|»»» createTime|string|true|none||none|
 
 # NantingStoreExplore/商铺
 
@@ -218,12 +408,26 @@ POST /api/stores/{storeId}/comments/{commentId}/like
 
 给评论点赞，需要验证
 
+> Body 请求参数
+
+```json
+{
+  "targetName": "string",
+  "targetId": "string",
+  "targetType": "string"
+}
+```
+
 ### 请求参数
 
 |名称|位置|类型|必选|中文名|说明|
 |---|---|---|---|---|---|
 |storeId|path|string| 是 ||none|
 |commentId|path|string| 是 ||none|
+|body|body|object| 否 ||none|
+|» targetName|body|string| 是 | 目标名|none|
+|» targetId|body|string| 是 ||none|
+|» targetType|body|string| 是 | 点赞对象的种类|此处是comment|
 
 > 返回示例
 
@@ -379,17 +583,31 @@ DELETE /api/stores/{storeId}/like
 |» code|integer|true|none||none|
 |» massage|string|true|none|信息|信息|
 
-## GET 点赞商铺
+## POST 点赞商铺
 
-GET /api/stores/{storeId}/like
+POST /api/stores/{storeId}/like
 
 点赞商铺，需要验证身份
+
+> Body 请求参数
+
+```json
+{
+  "targetName": "string",
+  "targetId": "string",
+  "targetType": "string"
+}
+```
 
 ### 请求参数
 
 |名称|位置|类型|必选|中文名|说明|
 |---|---|---|---|---|---|
 |storeId|path|string| 是 ||none|
+|body|body|object| 否 ||none|
+|» targetName|body|string| 是 ||被评论的商铺名|
+|» targetId|body|string| 是 ||被评论的商铺Id|
+|» targetType|body|string| 是 | 点赞对象的种类|此处是store|
 
 > 返回示例
 
@@ -415,144 +633,6 @@ GET /api/stores/{storeId}/like
 |---|---|---|---|---|---|
 |» code|integer|true|none||none|
 |» message|string|true|none||none|
-
-## GET 详细点赞记录
-
-GET /api/users/me/likes
-
-返回点赞记录列表，根据token中的user:id获取用户点赞记录
-
-> 返回示例
-
-> 200 Response
-
-```json
-{
-  "code": 0,
-  "message": "string",
-  "data": {
-    "userId": 0,
-    "userName": "string",
-    "totalLikes": 0,
-    "likes": [
-      {
-        "id": 0,
-        "userId": 0,
-        "targetId": 0,
-        "targetType": "string",
-        "targetName": "string",
-        "userName": "string",
-        "createTime": "string"
-      }
-    ]
-  }
-}
-```
-
-### 返回结果
-
-|状态码|状态码含义|说明|数据模型|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### 返回数据结构
-
-状态码 **200**
-
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
-|» message|string|true|none||none|
-|» data|object|true|none||none|
-|»» userId|integer|true|none||none|
-|»» userName|string|true|none||none|
-|»» totalLikes|integer|true|none||none|
-|»» likes|[object]|true|none||none|
-|»»» id|integer|true|none||none|
-|»»» userId|integer|true|none||none|
-|»»» targetId|integer|true|none||none|
-|»»» targetType|string|true|none||none|
-|»»» targetName|string|true|none||none|
-|»»» userName|string|true|none||none|
-|»»» createTime|string|true|none||none|
-
-## GET 获取详细评论信息
-
-GET /api/users/me/comments
-
-返回用户自己的评论记录列表，根据token中的user:id获取用户评论记录
-
-> 返回示例
-
-> 200 Response
-
-```json
-{
-  "code": 200,
-  "message": "查询成功",
-  "data": {
-    "userId": 10086,
-    "userName": "contrueCT",
-    "totalComments": 3,
-    "comments": [
-      {
-        "id": 1001,
-        "userId": 10086,
-        "targetId": 5001,
-        "userName": "contrueCT",
-        "targetName": "C++炒面",
-        "content": "这家店的炒面非常正宗，下次还会再来！",
-        "createTime": "2025-03-20T14:30:25"
-      },
-      {
-        "id": 1002,
-        "userId": 10086,
-        "targetId": 5002,
-        "userName": "contrueCT",
-        "targetName": "Java炒粉",
-        "content": "物美价廉，份量十足，是我的常去之处。",
-        "createTime": "2025-03-21T18:15:32"
-      },
-      {
-        "id": 1003,
-        "userId": 10086,
-        "targetId": 5003,
-        "userName": "contrueCT",
-        "targetName": "python炒饭",
-        "content": "食材简单朴素，但是味道很好，就是出餐有点慢。",
-        "createTime": "2025-03-22T02:45:18"
-      }
-    ]
-  }
-}
-```
-
-### 返回结果
-
-|状态码|状态码含义|说明|数据模型|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### 返回数据结构
-
-状态码 **200**
-
-|名称|类型|必选|约束|中文名|说明|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
-|» message|string|true|none||none|
-|» data|object|true|none||none|
-|»» userId|integer|true|none||none|
-|»» userName|string|true|none||none|
-|»» totalComments|integer|true|none||none|
-|»» comments|[object]|true|none||none|
-|»»» id|integer|true|none||none|
-|»»» userId|integer|true|none||none|
-|»»» targetId|integer|true|none||none|
-|»»» userName|string|true|none||none|
-|»»» targetName|string|true|none||none|
-|»»» content|string|true|none||none|
-|»»» createTime|string|true|none||none|
 
 ## GET 获取商铺列表
 
@@ -754,7 +834,9 @@ POST /api/stores/{storeId}/comments
 
 ```json
 {
-  "comment": "string"
+  "comment": "string",
+  "targetName": "string",
+  "targetId": "string"
 }
 ```
 
@@ -765,6 +847,8 @@ POST /api/stores/{storeId}/comments
 |storeId|path|string| 是 ||none|
 |body|body|object| 否 ||none|
 |» comment|body|string| 是 | 评论|none|
+|» targetName|body|string| 是 ||被评论的商铺名|
+|» targetId|body|string| 是 ||被评论的商铺的id|
 
 > 返回示例
 
@@ -821,9 +905,8 @@ POST /api/stores/login
 {
   "code": 0,
   "massage": "string",
-  "data": {
-    "token": "string"
-  }
+  "accessToken": "string",
+  "refreshToken": "string"
 }
 ```
 
@@ -841,8 +924,8 @@ POST /api/stores/login
 |---|---|---|---|---|---|
 |» code|integer|true|none||none|
 |» massage|string|true|none||none|
-|» data|object|true|none||none|
-|»» token|string|true|none||none|
+|» accessToken|string|true|none||none|
+|» refreshToken|string|true|none||none|
 
 ## POST 修改商铺信息
 
