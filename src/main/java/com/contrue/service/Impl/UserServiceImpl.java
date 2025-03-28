@@ -6,7 +6,9 @@ import com.contrue.entity.po.Comment;
 import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Permission;
 import com.contrue.entity.po.User;
+import com.contrue.entity.vo.AuthResult;
 import com.contrue.service.UserService;
+import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;
 import com.contrue.util.SystemLogger;
 import org.mindrot.jbcrypt.BCrypt;
@@ -65,28 +67,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer loginUser(User user) throws SQLException {
+    public AuthResult loginUser(User user) throws SQLException {
         UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
+        AuthResult authResult = new AuthResult();
         try {
             //非空校验
             if(user==null){
-                return null;
+                authResult.setCode(400);
             }
             if(user.getUsername()==null||user.getPassword()==null){
-                return null;
+                authResult.setCode(400);
             }
             //获取数据库中的用户数据
             User checkUser = userDAO.findByName(user,conn);
             if(checkUser==null){
-                return null;
+                authResult.setCode(400);
             }
+            authResult.setMsg("登录信息错误，登录失败");
             conn.commit();
             if(BCrypt.checkpw(user.getPassword(),checkUser.getPassword())){
-                return checkUser.getId();
+                //登录验证成功
+                String accessToken = JWTUtil.generateAccessToken(checkUser.getId().toString(),"user",checkUser.getUsername());
+                String refreshToken = JWTUtil.generateRefreshToken(checkUser.getId().toString(),"user",checkUser.getUsername());
+                authResult.setAccessToken(accessToken);
+                authResult.setRefreshToken(refreshToken);
+                authResult.setCode(200);
+                authResult.setMsg("登录成功");
+                return authResult;
+            }else{
+                authResult.setCode(401);
+                authResult.setMsg("密码错误，登录失败");
             }
-            return null;
+            return authResult;
         } catch (Exception e) {
             if(conn!=null){
                 conn.rollback();

@@ -5,7 +5,7 @@ import com.contrue.entity.po.Like;
 import java.sql.SQLException;
 
 /**
- * 补全点赞对象信息
+ * 补全点赞对象信息，targetType
  * 用户名和用户id
  * @author confff
  */

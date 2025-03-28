@@ -1,7 +1,7 @@
 package com.contrue.service;
 
 import com.contrue.entity.po.Store;
-import com.contrue.entity.po.User;
+import com.contrue.entity.vo.AuthResult;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 public interface StoreService {
 
 
-    Integer loginStore(Store store) throws SQLException;
+    AuthResult loginStore(Store store) throws SQLException;
 
     List<Store> getAllStore() throws SQLException;
 

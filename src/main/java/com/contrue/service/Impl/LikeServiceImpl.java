@@ -31,6 +31,7 @@ public class LikeServiceImpl implements LikesService {
         try {
             conn.setAutoCommit(false);
             if(like==null) return false;
+            like.setTargetType("Store");
             boolean result = LikeDAOImpl.getInstance().addLike(like,conn);
             conn.commit();
             return result;
@@ -75,6 +76,7 @@ public class LikeServiceImpl implements LikesService {
         try {
             conn.setAutoCommit(false);
             if(like==null) return false;
+            like.setTargetType("Comment");
             boolean result = LikeDAOImpl.getInstance().deleteLike(like,conn);
             conn.commit();
             return result;
