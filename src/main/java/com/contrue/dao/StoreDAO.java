@@ -1,5 +1,6 @@
 package com.contrue.dao;
 
+import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.po.Store;
 
 import java.sql.Connection;
@@ -23,6 +24,8 @@ public interface StoreDAO {
      * @return 是否更新成功
      */
     boolean updateStore(Store store,Connection conn);
+
+    List<Store> getStoresPage(PageResult<Store> storePageResult, Connection conn);
 
 
 

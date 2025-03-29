@@ -1,12 +1,11 @@
 package com.contrue.dao.Impl;
 
 import com.contrue.dao.StoreDAO;
+import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.po.StoreRole;
-import com.contrue.entity.po.User;
 import com.contrue.mapper.StoreMapper;
 import com.contrue.mapper.StoreRoleMapper;
-import com.contrue.mapper.UserMapper;
 import com.contrue.util.orm.Resources;
 import com.contrue.util.orm.session.SqlSession;
 import com.contrue.util.orm.session.SqlSessionFactory;
@@ -95,5 +94,11 @@ public class StoreDAOImpl implements StoreDAO {
     @Override
     public boolean updateStore(Store store,Connection conn) {
         return getStoreMapper(conn).updateStore(store)>0;
+    }
+
+    @Override
+    public List<Store> getStoresPage(PageResult<Store> storePageResult, Connection conn) {
+        StoreMapper storeMapper = getStoreMapper(conn);
+        return storeMapper.listStoreByPage(storePageResult);
     }
 }

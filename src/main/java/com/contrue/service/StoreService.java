@@ -1,5 +1,6 @@
 package com.contrue.service;
 
+import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.vo.AuthResult;
 
@@ -11,6 +12,9 @@ import java.util.List;
  */
 public interface StoreService {
 
+    PageResult<Store> getStoresByLikes(int page, int size);
+
+    PageResult<Store> getStoresByComments(int page, int size);
 
     AuthResult loginStore(Store store) throws SQLException;
 

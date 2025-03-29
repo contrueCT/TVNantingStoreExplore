@@ -2,6 +2,7 @@ package com.contrue.service.Impl;
 
 import com.contrue.dao.Impl.StoreDAOImpl;
 import com.contrue.dao.StoreDAO;
+import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.vo.AuthResult;
 import com.contrue.service.StoreService;
@@ -28,6 +29,34 @@ public class StoreServiceImpl implements StoreService {
     }
 
     private StoreServiceImpl() {}
+
+    @Override
+    public PageResult<Store> getStoresByLikes(int page, int size) {
+        StoreDAO storeDAO = StoreDAOImpl.getInstance();
+        Connection conn = MyDBConnection.getConnection();
+        PageResult<Store> pageResult = new PageResult<>();
+        pageResult.setSortBy("likes");
+        pageResult.setCurrentPage(page);
+        pageResult.setSize(size);
+        List<Store> stores = storeDAO.getStoresPage(pageResult,conn);
+        pageResult.setResults(stores);
+        pageResult.setTotal(stores.size());
+        return pageResult;
+    }
+
+    @Override
+    public PageResult<Store> getStoresByComments(int page, int size) {
+        StoreDAO storeDAO = StoreDAOImpl.getInstance();
+        Connection conn = MyDBConnection.getConnection();
+        PageResult<Store> pageResult = new PageResult<>();
+        pageResult.setSortBy("comment");
+        pageResult.setCurrentPage(page);
+        pageResult.setSize(size);
+        List<Store> stores = storeDAO.getStoresPage(pageResult,conn);
+        pageResult.setResults(stores);
+        pageResult.setTotal(stores.size());
+        return pageResult;
+    }
 
     @Override
     public AuthResult loginStore(Store store) throws SQLException {

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Result {
     private int code;
-    private String msg;
+    private String massage;
     private Object data;
 
     public static Result success(Object data) {
@@ -25,7 +25,7 @@ public class Result {
     public static Result error(String msg) {
         Result result = new Result();
         result.setCode(500);
-        result.setMsg(msg);
+        result.setMassage(msg);
         return result;
     }
 }

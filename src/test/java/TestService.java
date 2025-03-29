@@ -1,3 +1,4 @@
+import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Role;
 import com.contrue.entity.po.Store;
@@ -48,6 +49,13 @@ public class TestService {
         StoreService storeService = StoreServiceImpl.getInstance();
         boolean b = storeService.addStore(store);
         System.out.println(b);
+    }
+
+    @Test
+    public void TestStoreServiceGetStoreBy() throws SQLException {
+        StoreService storeService = StoreServiceImpl.getInstance();
+        PageResult pageResult = storeService.getStoresByComments(1,10);
+        System.out.println(pageResult.getResults());
     }
 }
 

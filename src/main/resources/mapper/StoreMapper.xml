@@ -30,4 +30,10 @@
         select * from store where store_name = #{name};
     </select>
 
+    <select id = "listStoreByPage" resultType="com.contrue.entity.po.Store" parameterType= "com.contrue.entity.dto.PageResult" actionType="select" openToken="#{" closeToken="}">
+        select * from store
+        order by #{sortBy} desc
+        limit #{offset} ,#{size};
+    </select>
+
 </mapper>
