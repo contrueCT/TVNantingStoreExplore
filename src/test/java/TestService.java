@@ -1,8 +1,5 @@
 import com.contrue.entity.dto.PageResult;
-import com.contrue.entity.po.Like;
-import com.contrue.entity.po.Role;
-import com.contrue.entity.po.Store;
-import com.contrue.entity.po.User;
+import com.contrue.entity.po.*;
 import com.contrue.service.Impl.StoreServiceImpl;
 import com.contrue.service.Impl.UserServiceImpl;
 import com.contrue.service.StoreService;
@@ -19,6 +16,15 @@ public class TestService {
         user.setId(2);
         UserService userService = UserServiceImpl.getInstance();
         User checkUser = userService.checkUserInfoById(user);
+        System.out.println(checkUser);
+    }
+
+    @Test
+    public void TestUserServiceCheckPermission() throws SQLException {
+        User user = new User();
+        user.setId(2);
+        UserService userService = UserServiceImpl.getInstance();
+        List<Permission> checkUser = userService.checkUserPermissionsById(user);
         System.out.println(checkUser);
     }
 
@@ -56,6 +62,15 @@ public class TestService {
         StoreService storeService = StoreServiceImpl.getInstance();
         PageResult pageResult = storeService.getStoresByComments(1,10);
         System.out.println(pageResult.getResults());
+    }
+
+    @Test
+    public void TestStoreServiceGetStoreById() throws SQLException {
+        StoreService storeService = StoreServiceImpl.getInstance();
+        Store store = new Store();
+        store.setId(8);
+        Store storeDetailById = storeService.getStoreDetailById(store);
+        System.out.println(storeDetailById);
     }
 }
 

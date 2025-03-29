@@ -48,6 +48,7 @@ public abstract class BaseServlet extends HttpServlet {
                 response.getWriter().write(respJson);
             }
         }catch (Exception e){
+            SystemLogger.logError(e.getMessage(),e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Result result = Result.error("响应过程中出错");
             String respJson = gson.toJson(result);
@@ -148,6 +149,11 @@ public abstract class BaseServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    protected void writeJson(HttpServletResponse response, Result result) throws IOException {
+        String respJson = new Gson().toJson(result);
+        response.getWriter().write(respJson);
     }
 }
 
