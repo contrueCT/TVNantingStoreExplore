@@ -26,6 +26,14 @@ public class MyConnectionPool {
     private MyConnectionPool() {
     }
 
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL驱动程序加载失败", e);
+        }
+    }
+
     public static synchronized MyConnectionPool getDataSource() {
 
         if (DataSource == null) {
