@@ -6,8 +6,8 @@
         values(#{userId},#{targetId},#{targetType},#{TargetName},#{userName})
     </insert>
 
-    <delete id = "deleteById" parameterType = "com.contrue.entity.po.Like" actionType = "update" openToken = "#{" closeToken = "}">
-        delete from like where id = #{id}
+    <delete id = "delete" parameterType = "com.contrue.entity.po.Like" actionType = "update" openToken = "#{" closeToken = "}">
+        delete from like where target_type = #{targetType} and target_id = #{targetId}
     </delete>
 
 </mapper>

@@ -31,6 +31,9 @@ public abstract class BaseServlet extends HttpServlet {
         String uri = request.getRequestURI();
         String contextPath = request.getContextPath();
 
+        //测试
+        System.out.println("接受到路径请求"+method+uri);
+
         String path = uri.substring(contextPath.length());
 
         String methodName = determineMethodName(method,path);

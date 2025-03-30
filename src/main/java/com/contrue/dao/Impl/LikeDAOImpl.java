@@ -2,7 +2,6 @@ package com.contrue.dao.Impl;
 
 import com.contrue.dao.LikeDAO;
 import com.contrue.entity.po.Like;
-import com.contrue.mapper.CommentMapper;
 import com.contrue.mapper.LikeMapper;
 import com.contrue.util.orm.Resources;
 import com.contrue.util.orm.session.SqlSession;
@@ -53,6 +52,6 @@ public class LikeDAOImpl implements LikeDAO {
 
     @Override
     public boolean deleteLike(Like like,Connection conn) {
-        return getLikeMapper(conn).deleteById(like)>0;
+        return getLikeMapper(conn).delete(like)>0;
     }
 }

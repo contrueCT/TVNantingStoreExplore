@@ -8,6 +8,6 @@ import com.contrue.entity.po.Like;
 public interface LikeMapper {
     int insertLike(Like record);
 
-    int deleteById(Like record);
+    int delete(Like record);
 
 }
