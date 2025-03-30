@@ -8,6 +8,7 @@ import com.contrue.entity.vo.AuthResult;
 import com.contrue.service.StoreService;
 import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;
+import com.contrue.util.SystemLogger;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
@@ -142,7 +143,8 @@ public class StoreServiceImpl implements StoreService {
             if(conn!=null){
                 conn.rollback();
             }
-            throw new RuntimeException(e);
+            SystemLogger.logError(e.getMessage(),e);
+            return null;
         }finally {
             if(conn!=null){
                 conn.setAutoCommit(true);

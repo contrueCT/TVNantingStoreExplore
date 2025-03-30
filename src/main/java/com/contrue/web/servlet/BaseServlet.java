@@ -23,7 +23,7 @@ public abstract class BaseServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setContentType("json/application;charset=utf-8");
+        response.setContentType("application/json;charset=utf-8");
         Gson gson = new Gson();
 
         //获取请求方法、url、上下文路径
@@ -52,6 +52,7 @@ public abstract class BaseServlet extends HttpServlet {
             }
         }catch (Exception e){
             SystemLogger.logError(e.getMessage(),e);
+            System.out.println("出错了");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Result result = Result.error("响应过程中出错");
             String respJson = gson.toJson(result);

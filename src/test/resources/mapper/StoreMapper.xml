@@ -19,7 +19,9 @@
     </update>
 
     <select id = "findById" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
-        select * from store where id = #{id};
+        select * from store
+        join comment on store.id = comment.target_id
+        where store.id = #{id};
     </select>
 
     <select id = "listAllStore" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
