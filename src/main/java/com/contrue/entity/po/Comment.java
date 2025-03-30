@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "comment")
 public class Comment {
-    @Column(name = "id")
+    @Column(name = "comment_id")
     private Integer id;
     @Column(name = "user_id")
     private Integer userId;
