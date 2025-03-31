@@ -1,0 +1,1824 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "TV一轮",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "评论"
+    }
+  ],
+  "paths": {
+    "/api/users/me": {
+      "get": {
+        "summary": "获取用户信息",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "massage": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "likesNum": {
+                          "type": "integer",
+                          "title": "点赞数"
+                        },
+                        "commentsNum": {
+                          "type": "integer",
+                          "title": "评论数"
+                        }
+                      },
+                      "required": [
+                        "likesNum",
+                        "commentsNum"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "massage",
+                    "data"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/me/likes": {
+      "get": {
+        "summary": "详细点赞记录",
+        "deprecated": false,
+        "description": "返回点赞记录列表，根据token中的user:id获取用户点赞记录",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "integer"
+                        },
+                        "userName": {
+                          "type": "string"
+                        },
+                        "totalLikes": {
+                          "type": "integer"
+                        },
+                        "likes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "userId": {
+                                "type": "integer"
+                              },
+                              "targetId": {
+                                "type": "integer"
+                              },
+                              "targetType": {
+                                "type": "string"
+                              },
+                              "targetName": {
+                                "type": "string"
+                              },
+                              "userName": {
+                                "type": "string"
+                              },
+                              "createTime": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "userId",
+                              "targetId",
+                              "targetType",
+                              "targetName",
+                              "userName",
+                              "createTime"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "userId",
+                        "userName",
+                        "totalLikes",
+                        "likes"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/me/comments": {
+      "get": {
+        "summary": "获取详细评论信息",
+        "deprecated": false,
+        "description": "返回用户自己的评论记录列表，根据token中的user:id获取用户评论记录",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "integer"
+                        },
+                        "userName": {
+                          "type": "string"
+                        },
+                        "totalComments": {
+                          "type": "integer"
+                        },
+                        "comments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "userId": {
+                                "type": "integer"
+                              },
+                              "targetId": {
+                                "type": "integer"
+                              },
+                              "userName": {
+                                "type": "string"
+                              },
+                              "targetName": {
+                                "type": "string"
+                              },
+                              "content": {
+                                "type": "string"
+                              },
+                              "createTime": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "userId",
+                              "targetId",
+                              "userName",
+                              "targetName",
+                              "content",
+                              "createTime"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "userId",
+                        "userName",
+                        "totalComments",
+                        "comments"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 200,
+                  "message": "查询成功",
+                  "data": {
+                    "userId": 10086,
+                    "userName": "contrueCT",
+                    "totalComments": 3,
+                    "comments": [
+                      {
+                        "id": 1001,
+                        "userId": 10086,
+                        "targetId": 5001,
+                        "userName": "contrueCT",
+                        "targetName": "C++炒面",
+                        "content": "这家店的炒面非常正宗，下次还会再来！",
+                        "createTime": "2025-03-20T14:30:25"
+                      },
+                      {
+                        "id": 1002,
+                        "userId": 10086,
+                        "targetId": 5002,
+                        "userName": "contrueCT",
+                        "targetName": "Java炒粉",
+                        "content": "物美价廉，份量十足，是我的常去之处。",
+                        "createTime": "2025-03-21T18:15:32"
+                      },
+                      {
+                        "id": 1003,
+                        "userId": 10086,
+                        "targetId": 5003,
+                        "userName": "contrueCT",
+                        "targetName": "python炒饭",
+                        "content": "食材简单朴素，但是味道很好，就是出餐有点慢。",
+                        "createTime": "2025-03-22T02:45:18"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/stores/{storeId}/like": {
+      "delete": {
+        "summary": "取消商铺点赞",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string",
+                      "title": "信息",
+                      "description": "信息"
+                    }
+                  },
+                  "required": [
+                    "massage",
+                    "code"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "点赞商铺",
+        "deprecated": false,
+        "description": "点赞商铺，需要验证身份",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetName": {
+                    "type": "string",
+                    "description": "被评论的商铺名"
+                  },
+                  "targetId": {
+                    "type": "string",
+                    "description": "被评论的商铺Id"
+                  },
+                  "targetType": {
+                    "type": "string",
+                    "description": "此处是store",
+                    "title": "点赞对象的种类"
+                  }
+                },
+                "required": [
+                  "targetName",
+                  "targetId",
+                  "targetType"
+                ]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "message",
+                    "code"
+                  ]
+                },
+                "example": {
+                  "message": "商铺点赞成功"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/stores": {
+      "get": {
+        "summary": "获取商铺列表",
+        "deprecated": false,
+        "description": "获取商铺列表，无需登录验证，可选排序规则（点赞/评论）",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "排序规则，按点赞数或评论数排序",
+            "required": false,
+            "example": "likes_desc",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "totalStores": {
+                          "type": "integer"
+                        },
+                        "stores": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              },
+                              "shortDescription": {
+                                "type": "string"
+                              },
+                              "likesCount": {
+                                "type": "integer"
+                              },
+                              "commentsCount": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "address",
+                              "shortDescription",
+                              "likesCount",
+                              "commentsCount"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "totalStores",
+                        "stores"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 200,
+                  "message": "查询成功",
+                  "data": {
+                    "totalStores": 3,
+                    "stores": [
+                      {
+                        "id": 1001,
+                        "name": "C++炒面",
+                        "address": "广东工业大学西生活区门口",
+                        "shortDescription": "百年老字号，正宗C++技艺传承",
+                        "likesCount": 156,
+                        "commentsCount": 42
+                      },
+                      {
+                        "id": 1002,
+                        "name": "Java炒粉",
+                        "address": "广东工业大学西生活区外天桥下",
+                        "shortDescription": "全中国唯一的附赠咖啡的炒粉店",
+                        "likesCount": 89,
+                        "commentsCount": 23
+                      },
+                      {
+                        "id": 1003,
+                        "name": "python炒饭",
+                        "address": "广东工业大学西生活区旁",
+                        "shortDescription": "平价美味，蟒蛇特色小吃齐全",
+                        "likesCount": 210,
+                        "commentsCount": 67
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/stores/{storeId}": {
+      "get": {
+        "summary": "获取商铺详细信息",
+        "deprecated": false,
+        "description": "获取商铺详细信息，无需登录验证",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "store": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "address": {
+                              "type": "string"
+                            },
+                            "phone": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "likesCount": {
+                              "type": "integer"
+                            },
+                            "commentsCount": {
+                              "type": "integer"
+                            },
+                            "comments": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "userId": {
+                                    "type": "integer"
+                                  },
+                                  "userName": {
+                                    "type": "string"
+                                  },
+                                  "content": {
+                                    "type": "string"
+                                  },
+                                  "createTime": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "userId",
+                                  "userName",
+                                  "content",
+                                  "createTime"
+                                ]
+                              }
+                            },
+                            "storeOwners": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "userId": {
+                                    "type": "integer"
+                                  },
+                                  "userName": {
+                                    "type": "string"
+                                  },
+                                  "role": {
+                                    "type": "string"
+                                  },
+                                  "joinTime": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "userId",
+                                  "userName",
+                                  "role",
+                                  "joinTime"
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "address",
+                            "phone",
+                            "description",
+                            "likesCount",
+                            "commentsCount",
+                            "comments",
+                            "storeOwners"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "store"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 200,
+                  "message": "查询成功",
+                  "data": {
+                    "store": {
+                      "id": 1001,
+                      "name": "C++炒面",
+                      "address": "广东工业大学西生活区门口",
+                      "phone": "020-12345678",
+                      "description": "创立于2005年的C++炒面，是广工最著名的美食之一。店主毕业于计算机科学专业，将编程思维融入烹饪技艺中，创造出了独具特色的'指针炒面'、'多态煎蛋'等招牌菜品。每一份炒面都如同精心设计的代码，层次分明，结构严谨。无论是初学者还是'老程序员'都能在这里找到属于自己的美食记忆。",
+                      "likesCount": 156,
+                      "commentsCount": 42,
+                      "comments": [
+                        {
+                          "userId": 10089,
+                          "userName": "CodeMaster",
+                          "content": "他家的指针炒面太好吃了！里面的鸡蛋就像是完美封装的对象，一口下去就能感受到美味的继承关系！",
+                          "createTime": "2025-03-22T05:30:12"
+                        },
+                        {
+                          "userId": 10086,
+                          "userName": "contrueCT",
+                          "content": "每次考试挂科后我都会来这里吃一碗炒面压压惊，感觉比面向对象编程还好理解，五星推荐！",
+                          "createTime": "2025-03-21T18:24:36"
+                        },
+                        {
+                          "userId": 10090,
+                          "userName": "AlgorithmGirl",
+                          "content": "老板炒面的手法就像执行排序算法一样行云流水，而且价格实惠，学生党福音！",
+                          "createTime": "2025-03-21T12:15:48"
+                        },
+                        {
+                          "userId": 10091,
+                          "userName": "DebugKing",
+                          "content": "这家店的调料是独家秘方，每一口都能尝到不同的层次，就像是一个精心设计的递归函数！",
+                          "createTime": "2025-03-20T09:34:27"
+                        },
+                        {
+                          "userId": 10092,
+                          "userName": "WebDeveloper",
+                          "content": "饭点人有点多，需要排队，但绝对值得等待！炒面的味道堪比成功编译后运行的快感！",
+                          "createTime": "2025-03-19T20:12:05"
+                        }
+                      ],
+                      "storeOwners": [
+                        {
+                          "userId": 8001,
+                          "userName": "CppMaster",
+                          "role": "店主",
+                          "joinTime": "2005-03-15T08:30:00"
+                        },
+                        {
+                          "userId": 8002,
+                          "userName": "DataStructure",
+                          "role": "厨师长",
+                          "joinTime": "2010-05-20T09:15:30"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/stores/{storeId}/update": {
+      "post": {
+        "summary": "修改商铺信息",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "状态码\n"
+                    },
+                    "massage": {
+                      "type": "string",
+                      "description": "响应信息"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "massage"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/auth/register/user": {
+      "put": {
+        "summary": "用户注册",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "用户名",
+                    "description": "不为空"
+                  },
+                  "password": {
+                    "type": "string",
+                    "title": "密码",
+                    "description": "不为空"
+                  },
+                  "email": {
+                    "type": "string",
+                    "title": "邮箱",
+                    "nullable": true
+                  },
+                  "phone": {
+                    "type": "string",
+                    "title": "电话",
+                    "description": "不为空"
+                  },
+                  "address": {
+                    "type": "string",
+                    "title": "地址",
+                    "nullable": true
+                  },
+                  "age": {
+                    "type": "string",
+                    "title": "年龄",
+                    "nullable": true
+                  },
+                  "gender": {
+                    "type": "string",
+                    "title": "性别",
+                    "nullable": true
+                  },
+                  "role": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "title": "角色",
+                    "nullable": true
+                  },
+                  "type": {
+                    "type": "string",
+                    "title": "用户类型"
+                  }
+                },
+                "required": [
+                  "name",
+                  "password",
+                  "phone",
+                  "type"
+                ]
+              },
+              "example": "{\r\n    \"name\": \"Legendpei666\",\r\n    \"password\": \"114514\",\r\n    \"email\": \"1919180@sohu.com\",\r\n    \"phone\": \"71739123228\",\r\n    \"address\": \"广东省 广州市 番禺区 华南交通大学 门口天桥下\",\r\n    \"age\": \"19\",\r\n    \"gender\": \"男\",\r\n    \"role\": [\r\n        普通用户\r\n    ]\r\n}"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "userId"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 200,
+                  "message": "User registered successfully",
+                  "data": {
+                    "userId": 1
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/auth/login/user": {
+      "post": {
+        "summary": "用户登录",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "用户名",
+                    "description": "ID 编号"
+                  },
+                  "password": {
+                    "type": "string",
+                    "title": "密码",
+                    "description": "密码"
+                  }
+                },
+                "required": [
+                  "name",
+                  "password"
+                ]
+              },
+              "example": {
+                "name": "奈蒙",
+                "password": "JTJyhbjhUfrcd_o"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string",
+                      "title": "响应信息"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string"
+                        },
+                        "refreshToken": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "accessToken",
+                        "refreshToken"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "data"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/auth/login/store": {
+      "post": {
+        "summary": "商铺登录",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "password"
+                ]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string"
+                        },
+                        "refreshToken": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "accessToken",
+                        "refreshToken"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "massage",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "code": 55,
+                  "massage": "Lorem elit aliqua officia pariatur",
+                  "data": {
+                    "accessToken": "Ut",
+                    "refreshToken": "laboris fugiat sunt ut"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "summary": "刷新访问令牌",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string",
+                    "title": "刷新令牌"
+                  }
+                },
+                "required": [
+                  "refreshToken"
+                ]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "accessToken"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "massage",
+                    "data"
+                  ]
+                },
+                "examples": {
+                  "1": {
+                    "summary": "成功示例",
+                    "value": {
+                      "accessToken": "..."
+                    }
+                  },
+                  "2": {
+                    "summary": "成功示例",
+                    "value": {
+                      "error": "invalid_token",
+                      "error_description": "刷新令牌无效或已过期"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "massage",
+                    "code"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/auth/register/store": {
+      "put": {
+        "summary": "商铺注册",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "number"
+                  },
+                  "shortDescription": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "roles": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "title": "用户类型"
+                  }
+                },
+                "required": [
+                  "name",
+                  "address",
+                  "phone",
+                  "shortDescription",
+                  "description",
+                  "roles",
+                  "type"
+                ]
+              },
+              "example": {
+                "name": "Java炒粉",
+                "address": "广东省 广州市 番禺区 广东工业大学 西区门口",
+                "phone": "88349348340",
+                "shortDescription": "容条机及到。员发素会该点山际领。",
+                "description": "电技增立使日处。积子书基入。采市接始信律儿。决车约济。志王龙。",
+                "roles": "store"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "massage",
+                    "code"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/stores/{storeId}/comments/{commentId}/like": {
+      "delete": {
+        "summary": "取消评论点赞",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "评论"
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string",
+                      "title": "信息",
+                      "description": "信息"
+                    }
+                  },
+                  "required": [
+                    "massage",
+                    "code"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "评论点赞",
+        "deprecated": false,
+        "description": "给评论点赞，需要验证",
+        "tags": [
+          "评论"
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetName": {
+                    "type": "string",
+                    "title": "目标名"
+                  },
+                  "targetId": {
+                    "type": "string"
+                  },
+                  "targetType": {
+                    "type": "string",
+                    "title": "点赞对象的种类",
+                    "description": "此处是comment"
+                  }
+                },
+                "required": [
+                  "targetName",
+                  "targetId",
+                  "targetType"
+                ]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string",
+                      "title": "信息",
+                      "description": "信息"
+                    }
+                  },
+                  "required": [
+                    "massage",
+                    "code"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/stores/{storeId}/comments/{commentId}": {
+      "delete": {
+        "summary": "删除评论",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "commentId",
+            "in": "query",
+            "description": "要删除的评论id",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string",
+                      "title": "信息",
+                      "description": "信息"
+                    }
+                  },
+                  "required": [
+                    "massage",
+                    "code"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/stores/{storeId}/comments": {
+      "post": {
+        "summary": "评论商铺",
+        "deprecated": false,
+        "description": "评论商铺，需要验证身份",
+        "tags": [
+          "评论"
+        ],
+        "parameters": [
+          {
+            "name": "storeId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Transfer-Encoding",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "utf-8",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "title": "评论"
+                  },
+                  "targetName": {
+                    "type": "string",
+                    "description": "被评论的商铺名"
+                  },
+                  "targetId": {
+                    "type": "string",
+                    "description": "被评论的商铺的id"
+                  }
+                },
+                "required": [
+                  "comment",
+                  "targetName",
+                  "targetId"
+                ]
+              },
+              "examples": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "massage": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "massage",
+                    "code"
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [],
+  "security": []
+}
