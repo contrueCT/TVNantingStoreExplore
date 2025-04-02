@@ -4,7 +4,7 @@ import com.contrue.dao.Impl.StoreDAOImpl;
 import com.contrue.dao.StoreDAO;
 import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.po.Store;
-import com.contrue.entity.vo.AuthResult;
+import com.contrue.entity.dto.AuthResult;
 import com.contrue.service.StoreService;
 import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;

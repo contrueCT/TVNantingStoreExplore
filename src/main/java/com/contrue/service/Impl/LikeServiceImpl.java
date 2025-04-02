@@ -77,6 +77,7 @@ public class LikeServiceImpl implements LikesService {
             conn.setAutoCommit(false);
             if(like==null) return false;
             like.setTargetType("Comment");
+            like.setTargetName("comment");
             boolean result = LikeDAOImpl.getInstance().deleteLike(like,conn);
             conn.commit();
             return result;

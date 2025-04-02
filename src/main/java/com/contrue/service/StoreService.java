@@ -2,7 +2,7 @@ package com.contrue.service;
 
 import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.po.Store;
-import com.contrue.entity.vo.AuthResult;
+import com.contrue.entity.dto.AuthResult;
 
 import java.sql.SQLException;
 import java.util.List;

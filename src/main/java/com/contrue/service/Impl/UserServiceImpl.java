@@ -6,7 +6,7 @@ import com.contrue.entity.po.Comment;
 import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Permission;
 import com.contrue.entity.po.User;
-import com.contrue.entity.vo.AuthResult;
+import com.contrue.entity.dto.AuthResult;
 import com.contrue.service.UserService;
 import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;

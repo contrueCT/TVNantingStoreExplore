@@ -1,4 +1,4 @@
-package com.contrue.entity.vo;
+package com.contrue.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

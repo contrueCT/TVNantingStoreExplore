@@ -5,6 +5,7 @@ import com.contrue.util.SystemLogger;
 import com.google.gson.Gson;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,15 +16,16 @@ import java.util.*;
 /**
  * @author confff
  */
-@WebServlet("/api/")
+@WebFilter("/api/*")
 public class AuthFilter implements Filter {
 
     private static final Set<String> EXCLUDE_PATHS = new HashSet<>(Arrays.asList(
-            "/api/users/register",
-            "/api/users/login",
-            "/api/stores/register",
-            "/api/stores/login",
-            "/api/stores/^\\d+$"
+            "/NantingStoreExplore/api/auth/login/user",
+            "/NantingStoreExplore/api/auth/login/store",
+            "/NantingStoreExplore/api/auth/register/user",
+            "/NantingStoreExplore/api/auth/register/store",
+            "/NantingStoreExplore/api/auth/refresh",
+            "/NantingStoreExplore/api/stores"
             ));
 
 
@@ -33,6 +35,10 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String url = request.getRequestURI();
+
+        //测试
+        System.out.println("请求进入filter："+url);
+
         if (EXCLUDE_PATHS.contains(url)) {
             filterChain.doFilter(request, response);
             return;
@@ -44,7 +50,7 @@ public class AuthFilter implements Filter {
         }
 
         try{
-            if (token == null&&!JWTUtil.validateToken(token)) {
+            if (token == null||!JWTUtil.validateToken(token)) {
                 handleUnauthorized(response);
                 return;
             }
@@ -77,7 +83,4 @@ public class AuthFilter implements Filter {
         writer.close();
     }
 
-    private boolean isExcludedPath(String path) {
-        return EXCLUDE_PATHS.stream().anyMatch(excludePath->excludePath.equals(path)||path.matches(excludePath));
-    }
 }

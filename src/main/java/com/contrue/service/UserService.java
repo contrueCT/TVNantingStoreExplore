@@ -4,7 +4,7 @@ import com.contrue.entity.po.Comment;
 import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Permission;
 import com.contrue.entity.po.User;
-import com.contrue.entity.vo.AuthResult;
+import com.contrue.entity.dto.AuthResult;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -52,16 +52,18 @@ public class JWTUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("subjectType", subjectType);
         claims.put("subjectName", subjectName);
+        claims.put("subjectId", subjectId);
         return generateToken(subjectId, ACCESS_TOKEN_EXPIRATION, claims);
     }
 
-    public static String generateRefreshToken(String userId, String subjectType, String subjectName) {
+    public static String generateRefreshToken(String subjectId, String subjectType, String subjectName) {
         Map<String, Object> claims = new HashMap<>();
         String refreshId = UUID.randomUUID().toString();
         claims.put("subjectType", subjectType);
         claims.put("subjectName", subjectName);
         claims.put("refreshId", refreshId);
-        return generateToken(userId, REFRESH_TOKEN_EXPIRATION, claims);
+        claims.put("subjectId", subjectId);
+        return generateToken(subjectId+"forRefresh", REFRESH_TOKEN_EXPIRATION, claims);
     }
 
     public static Claims parseToken(String token) {
@@ -74,7 +76,7 @@ public class JWTUtil {
 
     public static String getSubjectId(String token) {
         Claims claims = parseToken(token);
-        return claims.getSubject();
+        return claims.get("subjectId", String.class);
     }
 
     public static String getSubjectType(String token) {
@@ -103,7 +105,7 @@ public class JWTUtil {
                     .setSigningKey(SECRET_KEY)
                     .build()
                     .parseClaimsJws(token);
-            return isTokenExpired(token);
+            return !isTokenExpired(token);
         }catch (Exception e){
             return false;
         }

@@ -35,11 +35,15 @@ public abstract class BaseServlet extends HttpServlet {
         System.out.println("接受到路径请求"+method+uri);
 
         String path = uri.substring(contextPath.length());
+        //解析url参数
+        boolean hasParams = extractPathParams(request, path);
+        //获取方法名
+        String methodName = determineMethodName(method,path,hasParams);
 
-        String methodName = determineMethodName(method,path);
+        //测试
+        System.out.println("获取的方法名为："+methodName);
 
         try{
-            extractPathParams(request,path);
 
             Method targetMethod = findMethod(methodName);
             if(targetMethod != null){
@@ -61,39 +65,40 @@ public abstract class BaseServlet extends HttpServlet {
     }
 
     //确定方法名
-    protected String determineMethodName(String httpMethod, String path) {
+    protected String determineMethodName(String httpMethod, String path, boolean hasParamsInPath) {
         String urlPattern = getServletRegistration();
 
         if(path.contains("?")){
             path = path.substring(0, path.indexOf("?"));
         }
 
-        if(urlPattern.endsWith("/*")) {
-            urlPattern = urlPattern.substring(0, urlPattern.length()-2);
-        }
         //获得url模式数组
         String[] patternParts = urlPattern.split("/");
+        String[] urlParts = path.split("/");
 
         StringBuilder methodNameBuilder = new StringBuilder();
         methodNameBuilder.append(httpMethod.toLowerCase());
 
         //如果url中存在资源路径参数
-        if(urlPattern.contains("{")) {
+        if(hasParamsInPath&&urlPattern.contains("{")) {
 
             //资源名称（url最后一个非数字字段）
             String resourceName = null;
             boolean hasParams = false;
 
-            for(String patternPart : patternParts) {
-                if(!patternPart.isEmpty()){
-                    //检查末尾是否是参数
-                    if(patternPart.startsWith("{")){
-                        hasParams = true;
-                    }else{
-                        resourceName = patternPart;
-                        break;
+            for(int i = patternParts.length-1; i >= 0; i--) {
+                String patternPart = patternParts[i];
+                if(i<=urlParts.length-1){
+                    String urlPart = urlParts[i];
+                    if(!urlPart.isEmpty()){
+                        //检查末尾是否是参数
+                        if(patternPart.startsWith("{")){
+                            hasParams = true;
+                        }else{
+                            resourceName = urlPart;
+                            break;
+                        }
                     }
-
                 }
             }
 
@@ -117,12 +122,32 @@ public abstract class BaseServlet extends HttpServlet {
     protected abstract String getServletRegistration();
 
     //提取路径中的参数放入请求
-    private void extractPathParams(HttpServletRequest request, String path) {
+    private boolean extractPathParams(HttpServletRequest request, String path) {
         String urlPattern = getServletRegistration();
+        boolean hasParams = false;
 
         if(urlPattern.contains("{")) {
-            String regex = urlPattern.replaceAll("\\{([^/]+)\\}", "([^/]+)");
-            Pattern pattern = Pattern.compile(regex);
+            boolean endsWithWildcard = urlPattern.endsWith("/*");
+            String regexPattern = urlPattern;
+
+            //先去掉/*
+            if (endsWithWildcard) {
+                regexPattern = urlPattern.substring(0, urlPattern.length() - 2);
+            }
+
+            //替换路径参数为捕获组
+            regexPattern = regexPattern.replaceAll("\\{([^/]+)\\}", "([^/]+)");
+
+            //处理*
+            if (endsWithWildcard) {
+                // 添加可选的额外路径部分
+                regexPattern += "(/.*)?";
+            } else {
+                //处理中间的*
+                regexPattern = regexPattern.replaceAll("\\*", ".*");
+            }
+
+            Pattern pattern = Pattern.compile("^" + regexPattern + "$");
             Matcher matcher = pattern.matcher(path);
 
 
@@ -133,6 +158,7 @@ public abstract class BaseServlet extends HttpServlet {
 
                 int index = 1;
                 while (paramMatcher.find() && index <= matcher.groupCount()) {
+                    hasParams = true;
                     String paramName = paramMatcher.group(1);
                     String paramValue = matcher.group(index++);
                     // 将参数值存入request属性
@@ -140,6 +166,7 @@ public abstract class BaseServlet extends HttpServlet {
                 }
             }
         }
+        return hasParams;
     }
     //查找目标方法
     private Method findMethod(String methodName) {

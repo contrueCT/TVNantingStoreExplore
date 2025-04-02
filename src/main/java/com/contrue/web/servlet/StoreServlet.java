@@ -19,11 +19,11 @@ import java.sql.SQLException;
 /**
  * @author confff
  */
-@WebServlet("/api/stores")
+@WebServlet("/api/stores/*")
 public class StoreServlet extends BaseServlet{
     @Override
     protected String getServletRegistration() {
-        return "/api/stores/*";
+        return "/api/stores/{storeId}/*";
     }
 
     private StoreService storeService = StoreServiceImpl.getInstance();
@@ -36,7 +36,7 @@ public class StoreServlet extends BaseServlet{
 
         String pageStr = request.getParameter("page");
         String sizeStr = request.getParameter("pageSize");
-        String sortBy = request.getParameter("sortBy");
+        String sortBy = request.getParameter("sort");
 
         int page = 1;
         int pageSize = 10;
@@ -58,10 +58,13 @@ public class StoreServlet extends BaseServlet{
 
     }
     //通过id获取某商铺详情
-    public void getStoreId(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    public void getStoresId(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         String storeId = (String) request.getAttribute("storeId");
         Store store = new Store();
         store.setId(Integer.parseInt(storeId));
+
+        //测试
+        System.out.println("获取商铺详情方法被执行");
 
         Store storeDetailById = storeService.getStoreDetailById(store);
         Result result = Result.success(storeDetailById);
@@ -70,18 +73,16 @@ public class StoreServlet extends BaseServlet{
 
     //点赞商铺
     public void postLike(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        String storeIdStr = (String) request.getAttribute("storeId");
-        String subjectIdStr = (String) request.getAttribute("subjectId");
-        String subjectType = (String) request.getAttribute("subjectType");
-        String subjectName = (String) request.getAttribute("subjectName");
-        int subjectId = Integer.parseInt(subjectIdStr);
-        int storeId = Integer.parseInt(storeIdStr);
 
-        Like like = new Like();
-        like.setId(storeId);
-        like.setTargetType("store");
+        String subjectIdStr = (String) request.getAttribute("subjectId");
+
+        String subjectName = (String) request.getAttribute("subjectName");
+
+        int subjectId = Integer.parseInt(subjectIdStr);
+
+        Like like = JsonParser.parseJson(request, Like.class);
+
         like.setUserId(subjectId);
-        like.setTargetId(storeId);
         like.setUserName(subjectName);
 
         if(likesService.likeStore(like)){
