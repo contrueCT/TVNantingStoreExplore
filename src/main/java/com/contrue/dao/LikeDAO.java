@@ -13,4 +13,5 @@ public interface LikeDAO {
     //通过商铺Id删除
     boolean deleteLike(Like like,Connection conn);
 
+    Like getLike(Like like,Connection conn);
 }

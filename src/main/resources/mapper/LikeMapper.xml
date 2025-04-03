@@ -10,4 +10,8 @@
         delete from like where target_type = #{targetType} and target_id = #{targetId}
     </delete>
 
+    <select id = "findById" resultType="com.contrue.entity.po.Like" parameterType = "com.contrue.entity.po.Like" actionType="select" openToken="#{" closeToken="}">
+        select * from likes where user_id = #{userId} and target_id = {targetId}
+    </select>
+
 </mapper>

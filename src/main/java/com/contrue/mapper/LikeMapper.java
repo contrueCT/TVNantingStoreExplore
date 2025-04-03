@@ -10,4 +10,6 @@ public interface LikeMapper {
 
     int delete(Like record);
 
+    Like getLike(Like record);
+
 }

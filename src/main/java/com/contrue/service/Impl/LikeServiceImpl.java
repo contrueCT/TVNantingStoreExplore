@@ -1,6 +1,7 @@
 package com.contrue.service.Impl;
 
 import com.contrue.dao.Impl.LikeDAOImpl;
+import com.contrue.dao.LikeDAO;
 import com.contrue.entity.po.Like;
 import com.contrue.service.LikesService;
 import com.contrue.util.MyDBConnection;
@@ -31,6 +32,10 @@ public class LikeServiceImpl implements LikesService {
         try {
             conn.setAutoCommit(false);
             if(like==null) return false;
+            //判断是否已经点赞过
+            Like checkLike = LikeDAOImpl.getInstance().getLike(like,conn);
+            if(checkLike!=null) return false;
+
             like.setTargetType("Store");
             boolean result = LikeDAOImpl.getInstance().addLike(like,conn);
             conn.commit();
@@ -54,6 +59,10 @@ public class LikeServiceImpl implements LikesService {
         try {
             conn.setAutoCommit(false);
             if(like==null) return false;
+            //检查点赞是否存在
+            Like checkLike = LikeDAOImpl.getInstance().getLike(like,conn);
+            if(checkLike==null) return false;
+
             boolean result = LikeDAOImpl.getInstance().deleteLike(like,conn);
             conn.commit();
             return result;
@@ -76,6 +85,9 @@ public class LikeServiceImpl implements LikesService {
         try {
             conn.setAutoCommit(false);
             if(like==null) return false;
+            //检查点赞是否存在
+            Like checkLike = LikeDAOImpl.getInstance().getLike(like,conn);
+            if(checkLike!=null) return false;
             like.setTargetType("Comment");
             like.setTargetName("comment");
             boolean result = LikeDAOImpl.getInstance().deleteLike(like,conn);

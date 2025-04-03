@@ -1,6 +1,7 @@
 package com.contrue.service;
 
 import com.contrue.entity.dto.PageResult;
+import com.contrue.entity.dto.StoreSelect;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.dto.AuthResult;
 
@@ -20,7 +21,7 @@ public interface StoreService {
 
     List<Store> getAllStore() throws SQLException;
 
-    Store getStoreDetailById(Store store) throws SQLException;
+    Store getStoreDetailById(StoreSelect storeSelect) throws SQLException;
 
     boolean addStore(Store store) throws SQLException;
 

@@ -54,4 +54,10 @@ public class LikeDAOImpl implements LikeDAO {
     public boolean deleteLike(Like like,Connection conn) {
         return getLikeMapper(conn).delete(like)>0;
     }
+
+    @Override
+    public Like getLike(Like like, Connection conn) {
+        return getLikeMapper(conn).getLike(like);
+    }
+
 }

@@ -1,10 +1,14 @@
 package com.contrue.service.Impl;
 
+import com.contrue.dao.Impl.LikeDAOImpl;
 import com.contrue.dao.Impl.StoreDAOImpl;
 import com.contrue.dao.StoreDAO;
 import com.contrue.entity.dto.PageResult;
+import com.contrue.entity.dto.StoreSelect;
+import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.dto.AuthResult;
+import com.contrue.entity.po.User;
 import com.contrue.service.StoreService;
 import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;
@@ -132,11 +136,22 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store getStoreDetailById(Store store) throws SQLException {
+    public Store getStoreDetailById(StoreSelect storeSelect) throws SQLException {
+        Store store = storeSelect.getStore();
+        User user = storeSelect.getUser();
+
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
         try{
             Store checkStore = StoreDAOImpl.getInstance().findById(store,conn);
+            //判断是否被当前用户点赞
+            Like selectedLike = new Like();
+            selectedLike.setUserId(user.getId());
+            selectedLike.setTargetId(checkStore.getId());
+            Like isLike = LikeDAOImpl.getInstance().getLike(selectedLike, conn);
+            if(isLike!=null){
+                checkStore.setLiked(true);
+            }
             conn.commit();
             return checkStore;
         } catch (Exception e) {

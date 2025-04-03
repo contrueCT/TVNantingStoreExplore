@@ -39,4 +39,6 @@ public class Store {
     private List<Like> likes;
     @ForeignKey(name = "comments")
     private List<Comment> comments;
+
+    private boolean liked;
 }

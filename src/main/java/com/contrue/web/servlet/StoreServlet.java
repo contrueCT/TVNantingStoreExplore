@@ -1,7 +1,9 @@
 package com.contrue.web.servlet;
 
+import com.contrue.entity.dto.StoreSelect;
 import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Store;
+import com.contrue.entity.po.User;
 import com.contrue.entity.vo.Result;
 import com.contrue.service.Impl.LikeServiceImpl;
 import com.contrue.service.Impl.StoreServiceImpl;
@@ -59,6 +61,7 @@ public class StoreServlet extends BaseServlet{
     }
     //通过id获取某商铺详情
     public void getStoresId(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        String userId = (String) request.getAttribute("userId");
         String storeId = (String) request.getAttribute("storeId");
         Store store = new Store();
         store.setId(Integer.parseInt(storeId));
@@ -66,7 +69,11 @@ public class StoreServlet extends BaseServlet{
         //测试
         System.out.println("获取商铺详情方法被执行");
 
-        Store storeDetailById = storeService.getStoreDetailById(store);
+        User user = new User();
+        user.setId(Integer.parseInt(userId));
+        StoreSelect select = new StoreSelect(store, user);
+
+        Store storeDetailById = storeService.getStoreDetailById(select);
         Result result = Result.success(storeDetailById);
         writeJson(response,result);
     }
