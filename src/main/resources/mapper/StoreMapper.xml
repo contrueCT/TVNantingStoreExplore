@@ -20,7 +20,7 @@
 
     <select id = "findById" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
         select * from store
-        join comment on store.id = comment.target_id
+        left join comment on store.id = comment.comment_target_id
         where store.id = #{id};
     </select>
 

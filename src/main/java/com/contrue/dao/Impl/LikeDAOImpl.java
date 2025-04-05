@@ -3,6 +3,7 @@ package com.contrue.dao.Impl;
 import com.contrue.dao.LikeDAO;
 import com.contrue.entity.po.Like;
 import com.contrue.mapper.LikeMapper;
+import com.contrue.util.SystemLogger;
 import com.contrue.util.orm.Resources;
 import com.contrue.util.orm.session.SqlSession;
 import com.contrue.util.orm.session.SqlSessionFactory;
@@ -57,7 +58,12 @@ public class LikeDAOImpl implements LikeDAO {
 
     @Override
     public Like getLike(Like like, Connection conn) {
-        return getLikeMapper(conn).getLike(like);
+        try {
+            Like checkLike = getLikeMapper(conn).getLike(like).get(0);
+            return checkLike;
+        }catch (Exception e){
+            return null;
+        }
     }
 
 }

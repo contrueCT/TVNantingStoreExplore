@@ -2,7 +2,10 @@
 <mapper namespace="com.contrue.mapper.UserMapper">
 
     <select id = "findById" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken="#{" closeToken="}">
-        select * from user where id = #{id}
+        select * from user
+        left join comment on user.id = comment.comment_user_id
+        left join likes on user.id = likes.like_user_id
+        where user.id = #{id};
     </select>
 
     <insert id = "insertNewUser" resultType = "com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
@@ -12,16 +15,16 @@
 
     <select id = "joinSelectLikes" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
         select * from user
-        join likes on user.id = likes.user_id
+        left join likes on user.id = likes.like_user_id
         where user.id = #{id};
     </select>
 
     <select id = "joinSelectPermission" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
         select * from user
-        join user_role on user.id = user_role.user_id
-        join role on user_role.role_id = role.id
-        join role_permission on role.id = role_permission.role_id
-        join permission on role_permission.permission_id = permission.id
+        left join user_role on user.id = user_role.user_id
+        left join role on user_role.role_id = role.id
+        left join role_permission on role.id = role_permission.role_id
+        left join permission on role_permission.permission_id = permission.id
         where user.id = #{id};
     </select>
 
@@ -31,7 +34,7 @@
 
     <select id = "joinSelectComment" resultType="com.contrue.entity.po.User" parameterType = "com.contrue.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
         select * from user
-        join comment on user.id = comment.user_id
+        left join comment on user.id = comment.comment_user_id
         where user.id = #{id};
     </select>
 

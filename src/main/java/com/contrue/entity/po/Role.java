@@ -38,4 +38,12 @@ public class Role {
         roles.add(role);
         return roles;
     }
+
+    public static List<Role> getStoreRoleList(){
+        Role role = new Role();
+        role.setId(2);
+        List<Role> roles = new ArrayList<Role>();
+        roles.add(role);
+        return roles;
+    }
 }

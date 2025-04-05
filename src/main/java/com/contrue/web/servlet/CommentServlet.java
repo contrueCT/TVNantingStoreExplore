@@ -18,18 +18,18 @@ import java.sql.SQLException;
 /**
  * @author confff
  */
-@WebServlet("/api/stores/*/comments/*")
+@WebServlet("/api/comments/*")
 public class CommentServlet extends BaseServlet {
     @Override
     protected String getServletRegistration() {
-        return "/api/stores/{storeId}/comments/*";
+        return "/api/comments/{commentId}/like";
     }
 
     CommentService commentService = CommentServiceImpl.getInstance();
     LikesService likesService = LikeServiceImpl.getInstance();
 
     //新增评论
-    private void postComments(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    public void postComments(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         String userId = request.getAttribute("subjectId").toString();
         String userName = request.getAttribute("subjectName").toString();
         Comment comment = JsonParser.parseJson(request, Comment.class);
@@ -43,10 +43,10 @@ public class CommentServlet extends BaseServlet {
     }
 
     //删除评论
-    private void deleteComments(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    public void deleteComments(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         String userId = request.getAttribute("subjectId").toString();
         String userName = request.getAttribute("subjectName").toString();
-        String commentId = request.getParameter("commentId");
+        String commentId = request.getAttribute("commentId").toString();
 
         Comment comment = new Comment();
         comment.setId(Integer.parseInt(commentId));
@@ -59,10 +59,10 @@ public class CommentServlet extends BaseServlet {
     }
 
     //评论点赞
-    private void postLike(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    public void postLike(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         String userId = request.getAttribute("subjectId").toString();
         String userName = request.getAttribute("subjectName").toString();
-        String commentId = request.getParameter("commentId");
+        String commentId = request.getAttribute("commentId").toString();
 
         Like like = new Like();
         like.setUserId(Integer.parseInt(userId));
@@ -78,10 +78,10 @@ public class CommentServlet extends BaseServlet {
     }
 
     //取消评论点赞
-    private void deleteLike(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+    public void deleteLike(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         String userId = request.getAttribute("subjectId").toString();
         String userName = request.getAttribute("subjectName").toString();
-        String commentId = request.getParameter("commentId");
+        String commentId = request.getAttribute("commentId").toString();
 
         Like like = new Like();
         like.setTargetId(Integer.parseInt(commentId));

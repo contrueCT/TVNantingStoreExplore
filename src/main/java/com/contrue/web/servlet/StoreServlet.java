@@ -61,7 +61,7 @@ public class StoreServlet extends BaseServlet{
     }
     //通过id获取某商铺详情
     public void getStoresId(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        String userId = (String) request.getAttribute("userId");
+        String userId = (String) request.getAttribute("subjectId");
         String storeId = (String) request.getAttribute("storeId");
         Store store = new Store();
         store.setId(Integer.parseInt(storeId));
@@ -72,7 +72,7 @@ public class StoreServlet extends BaseServlet{
         User user = new User();
         user.setId(Integer.parseInt(userId));
         StoreSelect select = new StoreSelect(store, user);
-
+        System.out.println(select);
         Store storeDetailById = storeService.getStoreDetailById(select);
         Result result = Result.success(storeDetailById);
         writeJson(response,result);
@@ -116,11 +116,20 @@ public class StoreServlet extends BaseServlet{
     //取消点赞商铺
     public void deleteLike(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         String storeIdStr = (String) request.getAttribute("storeId");
+        String userId = (String) request.getAttribute("subjectId");
 
         Like like = new Like();
         like.setTargetId(Integer.parseInt(storeIdStr));
         like.setTargetType("store");
+        like.setUserId(Integer.parseInt(userId));
+
+        //测试
+        System.out.println("执行了deleteLike方法");
+
         if(likesService.unlikeStore(like)){
+            //测试
+            System.out.println("成功调用了deleteLike方法");
+
             writeJson(response,Result.success());
         }else{
             writeJson(response,Result.error("取消点赞失败"));

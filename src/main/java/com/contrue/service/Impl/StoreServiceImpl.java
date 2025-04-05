@@ -5,10 +5,8 @@ import com.contrue.dao.Impl.StoreDAOImpl;
 import com.contrue.dao.StoreDAO;
 import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.dto.StoreSelect;
-import com.contrue.entity.po.Like;
-import com.contrue.entity.po.Store;
+import com.contrue.entity.po.*;
 import com.contrue.entity.dto.AuthResult;
-import com.contrue.entity.po.User;
 import com.contrue.service.StoreService;
 import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;
@@ -84,6 +82,7 @@ public class StoreServiceImpl implements StoreService {
             }
             authResult.setMsg("登录信息错误，登录失败");
             conn.commit();
+
             if(BCrypt.checkpw(store.getPassword(),checkStore.getPassword())){
                 //登录验证成功
                 String AccessToken = JWTUtil.generateAccessToken(checkStore.getId().toString(),"store",checkStore.getName());
@@ -148,10 +147,25 @@ public class StoreServiceImpl implements StoreService {
             Like selectedLike = new Like();
             selectedLike.setUserId(user.getId());
             selectedLike.setTargetId(checkStore.getId());
+            selectedLike.setTargetType("store");
             Like isLike = LikeDAOImpl.getInstance().getLike(selectedLike, conn);
             if(isLike!=null){
                 checkStore.setLiked(true);
             }
+            System.out.println("是否被点赞："+checkStore.isLiked());
+            //判断评论是否被点赞
+            List<Comment> comments = checkStore.getComments();
+            for(Comment comment : comments){
+                Like selectedLikeComment = new Like();
+                selectedLikeComment.setUserId(user.getId());
+                selectedLikeComment.setTargetId(comment.getId());
+                selectedLikeComment.setTargetType("comment");
+                Like isLikeComment = LikeDAOImpl.getInstance().getLike(selectedLikeComment, conn);
+                if(isLikeComment!=null){
+                    comment.setLiked(true);
+                }
+            }
+
             conn.commit();
             return checkStore;
         } catch (Exception e) {
@@ -177,6 +191,7 @@ public class StoreServiceImpl implements StoreService {
             if(store==null){
                 return false;
             }
+            store.setRoles(Role.getStoreRoleList());
             if(store.getName()==null||store.getPassword()==null||store.getPhone()==null||store.getRoles()==null){
                 return false;
             }

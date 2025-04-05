@@ -97,13 +97,23 @@ public class UserDAOImpl implements UserDAO {
     public List<Like> getUserLikesId(User user, Connection conn) {
         UserMapper userMapper = getUserMapper(conn);
         User checkUser = userMapper.joinSelectLikes(user).get(0);
-        return checkUser.getLikes();
+        //测试
+        System.out.println(checkUser.getLikes());
+        if(checkUser.getLikes()!=null&& !checkUser.getLikes().isEmpty()&&checkUser.getLikes().get(0).getTargetId()!=null){
+            return checkUser.getLikes();
+        }
+        return null;
     }
 
     @Override
     public List<Comment> getUserCommentsById(User user, Connection conn) {
         UserMapper userMapper = getUserMapper(conn);
         User checkUser = userMapper.joinSelectComment(user).get(0);
-        return checkUser.getComments();
+        //测试
+        System.out.println(checkUser.getComments());
+        if(checkUser!=null&&checkUser.getComments()!=null&& !checkUser.getComments().isEmpty()&&checkUser.getComments().get(0).getTargetId()!=null){
+            return checkUser.getComments();
+        }
+        return null;
     }
 }

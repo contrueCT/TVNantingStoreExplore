@@ -1,4 +1,5 @@
 import com.contrue.entity.dto.PageResult;
+import com.contrue.entity.dto.StoreSelect;
 import com.contrue.entity.po.*;
 import com.contrue.service.Impl.StoreServiceImpl;
 import com.contrue.service.Impl.UserServiceImpl;
@@ -69,7 +70,9 @@ public class TestService {
         StoreService storeService = StoreServiceImpl.getInstance();
         Store store = new Store();
         store.setId(8);
-        Store storeDetailById = storeService.getStoreDetailById(store);
+        StoreSelect storeSelect = new StoreSelect();
+        storeSelect.setStore(store);
+        Store storeDetailById = storeService.getStoreDetailById(storeSelect);
         System.out.println(storeDetailById);
     }
 }
