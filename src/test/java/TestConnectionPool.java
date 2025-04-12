@@ -1,8 +1,8 @@
-import com.contrue.entity.po.User;
+import com.contrue.webapp.entity.po.User;
 import com.contrue.util.MyDBConnection;
-import com.contrue.util.orm.MyORM;
-import com.contrue.util.orm.MyORMImpl;
-import com.contrue.util.orm.SelectMethod;
+import com.contrue.orm.MyORM;
+import com.contrue.orm.MyORMImpl;
+import com.contrue.orm.SelectMethod;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;

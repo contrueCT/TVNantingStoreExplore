@@ -1,7 +1,7 @@
-import com.contrue.util.orm.configuration.Configuration;
-import com.contrue.util.orm.Resources;
-import com.contrue.util.orm.configuration.XmlConfigBuilder;
-import com.contrue.util.orm.configuration.XmlMapperBuilder;
+import com.contrue.orm.configuration.Configuration;
+import com.contrue.orm.Resources;
+import com.contrue.orm.configuration.XmlConfigBuilder;
+import com.contrue.orm.configuration.XmlMapperBuilder;
 import org.dom4j.DocumentException;
 import org.junit.jupiter.api.Test;
 

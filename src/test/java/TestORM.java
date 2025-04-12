@@ -1,16 +1,15 @@
-import com.contrue.mapper.UserMapper;
-import com.contrue.entity.po.User;
+import com.contrue.webapp.mapper.UserMapper;
+import com.contrue.webapp.entity.po.User;
 import com.contrue.util.MyDBConnection;
-import com.contrue.util.orm.Resources;
-import com.contrue.util.orm.session.SqlSession;
-import com.contrue.util.orm.session.SqlSessionFactory;
-import com.contrue.util.orm.session.SqlSessionFactoryBuilder;
+import com.contrue.orm.Resources;
+import com.contrue.orm.session.SqlSession;
+import com.contrue.orm.session.SqlSessionFactory;
+import com.contrue.orm.session.SqlSessionFactoryBuilder;
 import org.dom4j.DocumentException;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 public class TestORM {
     @Test

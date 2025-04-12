@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<mapper namespace="com.contrue.mapper.CommentMapper">
+<mapper namespace="com.contrue.webapp.mapper.CommentMapper">
 
-    <insert id = "insert" parameterType = "com.contrue.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}" >
+    <insert id = "insert" parameterType = "com.contrue.webapp.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}" >
         insert into comment (comment_user_id,comment_target_id,comment_target_name,comment_user_name,content)
         values(#{userId},#{targetId},#{targetName},#{userName},#{content})
     </insert>
 
-    <delete id = "deleteById" parameterType = "com.contrue.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}">
+    <delete id = "deleteById" parameterType = "com.contrue.webapp.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}">
         delete from comment where comment_id = #{id}
     </delete>
 

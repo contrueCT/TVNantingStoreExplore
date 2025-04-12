@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<mapper namespace="com.contrue.mapper.StoreMapper">
+<mapper namespace="com.contrue.webapp.mapper.StoreMapper">
 
-    <insert id = "insertStore" parameterType = "com.contrue.entity.po.Store" actionType = "update" openToken = "#{" closeToken = "}" >
+    <insert id = "insertStore" parameterType = "com.contrue.webapp.entity.po.Store" actionType = "update" openToken = "#{" closeToken = "}" >
         insert into store (store_name,store_password,store_address,store_phone,store_short_description,store_description)
         values (#{name},#{password},#{address},#{phone},#{shortDescription},#{description})
 
     </insert>
 
-    <update id = "updateStore" parameterType = "com.contrue.entity.po.Store" actionType = "update" openToken = "#{" closeToken = "}">
+    <update id = "updateStore" parameterType = "com.contrue.webapp.entity.po.Store" actionType = "update" openToken = "#{" closeToken = "}">
         update store set
         store_name = #{name},
         store_password = #{password},
@@ -18,21 +18,21 @@
         where id = #{id};
     </update>
 
-    <select id = "findById" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
+    <select id = "findById" resultType="com.contrue.webapp.entity.po.Store" parameterType = "com.contrue.webapp.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
         select * from store
         join comment on store.id = comment.target_id
         where store.id = #{id};
     </select>
 
-    <select id = "listAllStore" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
+    <select id = "listAllStore" resultType="com.contrue.webapp.entity.po.Store" parameterType = "com.contrue.webapp.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
         select * from store;
     </select>
 
-    <select id = "findByName" resultType="com.contrue.entity.po.Store" parameterType = "com.contrue.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
+    <select id = "findByName" resultType="com.contrue.webapp.entity.po.Store" parameterType = "com.contrue.webapp.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
         select * from store where store_name = #{name};
     </select>
 
-    <select id = "listStoreByPage" resultType="com.contrue.entity.po.Store" parameterType= "com.contrue.entity.dto.PageResult" actionType="select" openToken="#{" closeToken="}">
+    <select id = "listStoreByPage" resultType="com.contrue.webapp.entity.po.Store" parameterType= "com.contrue.webapp.entity.dto.PageResult" actionType="select" openToken="#{" closeToken="}">
         select * from store
         order by #{sortBy} desc
         limit #{offset} ,#{size};

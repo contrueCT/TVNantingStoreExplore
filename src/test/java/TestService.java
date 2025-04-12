@@ -1,11 +1,14 @@
-import com.contrue.entity.dto.PageResult;
-import com.contrue.entity.dto.StoreSelect;
-import com.contrue.entity.po.*;
-import com.contrue.entity.vo.StoreDetailVO;
-import com.contrue.service.Impl.StoreServiceImpl;
-import com.contrue.service.Impl.UserServiceImpl;
-import com.contrue.service.StoreService;
-import com.contrue.service.UserService;
+import com.contrue.webapp.entity.dto.PageResult;
+import com.contrue.webapp.entity.dto.StoreSelect;
+import com.contrue.webapp.entity.po.Permission;
+import com.contrue.webapp.entity.po.Role;
+import com.contrue.webapp.entity.po.Store;
+import com.contrue.webapp.entity.po.User;
+import com.contrue.webapp.entity.vo.StoreDetailVO;
+import com.contrue.webapp.service.Impl.StoreServiceImpl;
+import com.contrue.webapp.service.Impl.UserServiceImpl;
+import com.contrue.webapp.service.StoreService;
+import com.contrue.webapp.service.UserService;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;

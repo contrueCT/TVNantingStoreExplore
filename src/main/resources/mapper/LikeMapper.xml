@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<mapper namespace="com.contrue.mapper.LikeMapper">
+<mapper namespace="com.contrue.webapp.mapper.LikeMapper">
 
-    <insert id = "insertLike" parameterType = "com.contrue.entity.po.Like" actionType = "update" openToken = "#{" closeToken = "}" >
+    <insert id = "insertLike" parameterType = "com.contrue.webapp.entity.po.Like" actionType = "update" openToken = "#{" closeToken = "}" >
         insert into likes (like_user_id,like_target_id,like_target_Type,like_target_name,like_user_name)
         values(#{userId},#{targetId},#{targetType},#{targetName},#{userName})
     </insert>
 
-    <delete id = "delete" parameterType = "com.contrue.entity.po.Like" actionType = "update" openToken = "#{" closeToken = "}">
+    <delete id = "delete" parameterType = "com.contrue.webapp.entity.po.Like" actionType = "update" openToken = "#{" closeToken = "}">
         delete from likes where like_target_type = #{targetType} and like_target_id = #{targetId}
     </delete>
 
-    <select id = "getLike" resultType="com.contrue.entity.po.Like" parameterType = "com.contrue.entity.po.Like" actionType="select" openToken="#{" closeToken="}">
+    <select id = "getLike" resultType="com.contrue.webapp.entity.po.Like" parameterType = "com.contrue.webapp.entity.po.Like" actionType="select" openToken="#{" closeToken="}">
         select likes.like_id as id,likes.like_user_id,like_target_id,like_target_type,like_target_name,like_user_name,like_create_time
         from likes
         where like_user_id = #{userId} and like_target_id = #{targetId} and like_target_type = #{targetType}
