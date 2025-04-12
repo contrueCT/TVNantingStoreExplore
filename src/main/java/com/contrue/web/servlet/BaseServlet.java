@@ -24,7 +24,6 @@ public abstract class BaseServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=utf-8");
-        Gson gson = new Gson();
 
         //获取请求方法、url、上下文路径
         String method = request.getMethod();
@@ -51,16 +50,14 @@ public abstract class BaseServlet extends HttpServlet {
             }else{
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 Result result = Result.error("找不到该接口");
-                String respJson = gson.toJson(result);
-                response.getWriter().write(respJson);
+                writeJson(response,result);
             }
         }catch (Exception e){
             SystemLogger.logError(e.getMessage(),e);
             System.out.println("出错了");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Result result = Result.error("响应过程中出错");
-            String respJson = gson.toJson(result);
-            response.getWriter().write(respJson);
+            writeJson(response,result);
         }
     }
 

@@ -35,7 +35,7 @@ public class SystemLogger {
     public static class ErrorFormatter extends Formatter {
         @Override
         public String format(LogRecord record) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String timestamp = LocalDateTime.now().toString();
 
             sb.append("\n=== 错误日志 ===\n");

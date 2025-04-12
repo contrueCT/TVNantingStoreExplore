@@ -83,10 +83,6 @@ public class MyConnectionPool {
     //获取连接，通过instance
     public synchronized Connection getConnection() throws SQLException, InterruptedException {
         try {
-            //如果连接池为空则等待
-            while (connectionPool.isEmpty()) {
-                wait();
-            }
             Connection conn = connectionPool.take();
             return this.createProxyConnection(conn,this);
         } catch (Exception e) {
@@ -101,10 +97,7 @@ public class MyConnectionPool {
         if (conn != null) {
             try{
                 if(!conn.isClosed()){
-                    synchronized (lock) {
-                        connectionPool.add(conn);
-                        lock.notifyAll(); // 使用显式锁对象
-                    }
+                    connectionPool.add(conn);
                 }
             } catch (SQLException e) {
                 SystemLogger.logError("连接回收失败",e);
@@ -135,7 +128,7 @@ public class MyConnectionPool {
                 new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        if ("close".equals(method.getName())) {
+                            if ("close".equals(method.getName())) {
                             // 拦截 close 方法
                             pool.releaseConnection(conn);
                             return null;

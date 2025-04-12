@@ -167,7 +167,7 @@ public class ResultSetMapper {
             if(field.getType() == List.class){
                 continue;
             }
-            Class<?> targetType = field.getType();
+
             //根据注解获取字段值
             Column columnAnnotation = field.getAnnotation(Column.class);
             if(columnAnnotation != null){

@@ -30,6 +30,8 @@ public class Comment {
     private String content;
     @Column(name = "comment_create_time")
     private LocalDateTime createTime;
+    @Column(name = "comment_likes_count")
+    private Integer likesCount;
 
     private boolean liked;
 }

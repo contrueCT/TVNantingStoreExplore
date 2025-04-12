@@ -30,13 +30,7 @@ public class SimpleExecutor implements Executor {
         Class<?> resultTypeClass = this.getClassType(mappedStatement.getResultType());
         try(PreparedStatement preparedStatement = conn.prepareStatement(sql)){
             setParameters(preparedStatement,parameterMapperList,parameterTypeClass,parameters);
-            if (SELECT.equals(mappedStatement.getActionType())) {
-                return (List<T>) executeQuery (preparedStatement, resultTypeClass);
-            } else {
-                int rowsAffected = preparedStatement.executeUpdate();
-                System.out.println("Rows affected: " + rowsAffected);
-                return Collections.emptyList();
-            }
+            return (List<T>) executeQuery (preparedStatement, resultTypeClass);
         }
     }
 
