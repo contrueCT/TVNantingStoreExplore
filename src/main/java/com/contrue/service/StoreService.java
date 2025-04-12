@@ -4,6 +4,8 @@ import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.dto.StoreSelect;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.dto.AuthResult;
+import com.contrue.entity.vo.StoreDetailVO;
+import com.contrue.entity.vo.StoreListVO;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,15 +15,15 @@ import java.util.List;
  */
 public interface StoreService {
 
-    PageResult<Store> getStoresByLikes(int page, int size);
+    PageResult<StoreListVO> getStoresByLikes(int page, int size);
 
-    PageResult<Store> getStoresByComments(int page, int size);
+    PageResult<StoreListVO> getStoresByComments(int page, int size);
 
     AuthResult loginStore(Store store) throws SQLException;
 
     List<Store> getAllStore() throws SQLException;
 
-    Store getStoreDetailById(StoreSelect storeSelect) throws SQLException;
+    StoreDetailVO getStoreDetailById(StoreSelect storeSelect) throws SQLException;
 
     boolean addStore(Store store) throws SQLException;
 

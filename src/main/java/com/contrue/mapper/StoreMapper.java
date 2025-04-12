@@ -22,5 +22,7 @@ public interface StoreMapper {
 
     int updateStore(Store store);
 
+    int addFollowersCount(Store store);
 
+    int reduceFollowersCount(Store store);
 }

@@ -1,11 +1,14 @@
 package com.contrue.web.servlet;
 
+import com.contrue.entity.dto.SubscribeDTO;
 import com.contrue.entity.po.Comment;
 import com.contrue.entity.po.Like;
+import com.contrue.entity.po.Subscribe;
 import com.contrue.entity.po.User;
 import com.contrue.entity.vo.Result;
 import com.contrue.service.Impl.UserServiceImpl;
 import com.contrue.service.UserService;
+import com.contrue.util.JsonParser;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,4 +57,23 @@ public class UserServlet extends BaseServlet {
         List<Like> likes = userService.checkOwnLikesById(user);
         writeJson(response,Result.success(likes));
     }
+
+    public void postSubscribe(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        SubscribeDTO subscribeDTO = JsonParser.parseJson(request, SubscribeDTO.class);
+        if(userService.subscribeOther(subscribeDTO)) {
+            writeJson(response, Result.success());
+        } else {
+            writeJson(response, Result.error("关注失败"));
+        }
+    }
+
+    public void deleteSubscribe(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        SubscribeDTO subscribeDTO = JsonParser.parseJson(request, SubscribeDTO.class);
+        if(userService.cancelSubscribe(subscribeDTO)) {
+            writeJson(response, Result.success());
+        } else {
+            writeJson(response, Result.error("取消关注失败"));
+        }
+    }
+
 }

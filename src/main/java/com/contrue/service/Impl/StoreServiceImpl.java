@@ -7,6 +7,8 @@ import com.contrue.entity.dto.PageResult;
 import com.contrue.entity.dto.StoreSelect;
 import com.contrue.entity.po.*;
 import com.contrue.entity.dto.AuthResult;
+import com.contrue.entity.vo.StoreDetailVO;
+import com.contrue.entity.vo.StoreListVO;
 import com.contrue.service.StoreService;
 import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;
@@ -15,6 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,29 +37,64 @@ public class StoreServiceImpl implements StoreService {
     private StoreServiceImpl() {}
 
     @Override
-    public PageResult<Store> getStoresByLikes(int page, int size) {
+    public PageResult<StoreListVO> getStoresByLikes(int page, int size) {
         StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
-        PageResult<Store> pageResult = new PageResult<>();
+        PageResult<Store> pageResultForSelect = new PageResult<>();
+        pageResultForSelect.setSortBy("likes");
+        pageResultForSelect.setCurrentPage(page);
+        pageResultForSelect.setSize(size);
+        List<Store> stores = storeDAO.getStoresPage(pageResultForSelect,conn);
+
+        List<StoreListVO> storeListVOs = new ArrayList<>();
+
+        for(Store store : stores){
+            StoreListVO storeListVO = new StoreListVO();
+            storeListVO.setId(store.getId());
+            storeListVO.setName(store.getName());
+            storeListVO.setLikesCount(store.getLikesCount());
+            storeListVO.setCommentsCount(store.getCommentsCount());
+            storeListVO.setShortDescription(store.getShortDescription());
+            storeListVO.setAddress(store.getAddress());
+            storeListVOs.add(storeListVO);
+        }
+
+        PageResult<StoreListVO> pageResult = new PageResult<>();
         pageResult.setSortBy("likes");
         pageResult.setCurrentPage(page);
         pageResult.setSize(size);
-        List<Store> stores = storeDAO.getStoresPage(pageResult,conn);
-        pageResult.setResults(stores);
+        pageResult.setResults(storeListVOs);
         pageResult.setTotal(stores.size());
         return pageResult;
     }
 
     @Override
-    public PageResult<Store> getStoresByComments(int page, int size) {
+    public PageResult<StoreListVO> getStoresByComments(int page, int size) {
         StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
-        PageResult<Store> pageResult = new PageResult<>();
+        PageResult<Store> pageResultForSelect = new PageResult<>();
+        pageResultForSelect.setSortBy("comment");
+        pageResultForSelect.setCurrentPage(page);
+        pageResultForSelect.setSize(size);
+
+        List<Store> stores = storeDAO.getStoresPage(pageResultForSelect,conn);
+
+        List<StoreListVO> storeListVOs = new ArrayList<>();
+        for(Store store : stores){
+            StoreListVO storeListVO = new StoreListVO();
+            storeListVO.setId(store.getId());
+            storeListVO.setName(store.getName());
+            storeListVO.setLikesCount(store.getLikesCount());
+            storeListVO.setCommentsCount(store.getCommentsCount());
+            storeListVO.setShortDescription(store.getShortDescription());
+            storeListVO.setAddress(store.getAddress());
+            storeListVOs.add(storeListVO);
+        }
+        PageResult<StoreListVO> pageResult = new PageResult<>();
         pageResult.setSortBy("comment");
         pageResult.setCurrentPage(page);
         pageResult.setSize(size);
-        List<Store> stores = storeDAO.getStoresPage(pageResult,conn);
-        pageResult.setResults(stores);
+        pageResult.setResults(storeListVOs);
         pageResult.setTotal(stores.size());
         return pageResult;
     }
@@ -135,7 +173,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store getStoreDetailById(StoreSelect storeSelect) throws SQLException {
+    public StoreDetailVO getStoreDetailById(StoreSelect storeSelect) throws SQLException {
         Store store = storeSelect.getStore();
         User user = storeSelect.getUser();
 
@@ -166,8 +204,19 @@ public class StoreServiceImpl implements StoreService {
                 }
             }
 
+            StoreDetailVO storeDetailVO = new StoreDetailVO();
+            storeDetailVO.setId(checkStore.getId());
+            storeDetailVO.setName(checkStore.getName());
+            storeDetailVO.setDescription(checkStore.getDescription());
+            storeDetailVO.setAddress(checkStore.getAddress());
+            storeDetailVO.setPhone(checkStore.getPhone());
+            storeDetailVO.setShortDescription(checkStore.getShortDescription());
+            storeDetailVO.setLikesCount(checkStore.getLikesCount());
+            storeDetailVO.setCommentsCount(checkStore.getCommentsCount());
+            storeDetailVO.setComments(checkStore.getComments());
+
             conn.commit();
-            return checkStore;
+            return storeDetailVO;
         } catch (Exception e) {
             if(conn!=null){
                 conn.rollback();

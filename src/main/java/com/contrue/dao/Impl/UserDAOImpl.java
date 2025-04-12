@@ -1,9 +1,12 @@
 package com.contrue.dao.Impl;
 
 import com.contrue.dao.UserDAO;
+import com.contrue.entity.dto.SubscribeDTO;
 import com.contrue.entity.po.*;
+import com.contrue.mapper.SubscribesMapper;
 import com.contrue.mapper.UserMapper;
 import com.contrue.mapper.UserRoleMapper;
+import com.contrue.util.SystemLogger;
 import com.contrue.util.orm.Resources;
 import com.contrue.util.orm.session.SqlSession;
 import com.contrue.util.orm.session.SqlSessionFactory;
@@ -51,6 +54,14 @@ public class UserDAOImpl implements UserDAO {
     private UserRoleMapper getUserRoleMapper(Connection conn){
         try {
             return sqlSession.getMapper(UserRoleMapper.class, conn);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private SubscribesMapper getSubscribesMapper(Connection conn){
+        try {
+            return sqlSession.getMapper(SubscribesMapper.class, conn);
         }catch(Exception e){
             throw new RuntimeException(e);
         }
@@ -115,5 +126,67 @@ public class UserDAOImpl implements UserDAO {
             return checkUser.getComments();
         }
         return null;
+    }
+
+    @Override
+    public boolean subscribeOther(SubscribeDTO subscribeDTO, Connection conn) {
+        UserMapper userMapper = getUserMapper(conn);
+        SubscribesMapper subscribesMapper = getSubscribesMapper(conn);
+        User user = new User();
+        user.setId(subscribeDTO.getUserId());
+        Subscribe subscribe = new Subscribe();
+        subscribe.setUserId(subscribeDTO.getUserId());
+        subscribe.setTargetId(subscribeDTO.getTargetId());
+        subscribe.setTargetType(subscribeDTO.getTargetType());
+        subscribe.setTargetName(subscribeDTO.getTargetName());
+        try {
+            return subscribesMapper.insertSubscribes(subscribe) > 0 && userMapper.addSubscribesCount(user) > 0;
+        } catch (Exception e) {
+            SystemLogger.logError(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean beSubscribed(User user, Connection conn) {
+        UserMapper userMapper = getUserMapper(conn);
+        try {
+            return userMapper.addFollowersCount(user) > 0;
+        } catch (Exception e) {
+            SystemLogger.logError(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    @Override
+    public boolean beUnSubscribed(User user, Connection conn) {
+        UserMapper userMapper = getUserMapper(conn);
+        try {
+            return userMapper.reduceFollowersCount(user) > 0;
+        } catch (Exception e) {
+            SystemLogger.logError(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean cancelSubscribe(SubscribeDTO subscribeDTO, Connection conn) {
+        UserMapper userMapper = getUserMapper(conn);
+        SubscribesMapper subscribesMapper = getSubscribesMapper(conn);
+        User user = new User();
+        user.setId(subscribeDTO.getUserId());
+        Subscribe subscribe = new Subscribe();
+        subscribe.setUserId(subscribeDTO.getUserId());
+        subscribe.setTargetId(subscribeDTO.getTargetId());
+        subscribe.setTargetType(subscribeDTO.getTargetType());
+        subscribe.setTargetName(subscribeDTO.getTargetName());
+        try {
+            return subscribesMapper.deleteSubscribes(subscribe) > 0 && userMapper.reduceSubscribesCount(user) > 0;
+        } catch (Exception e) {
+            SystemLogger.logError(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 }

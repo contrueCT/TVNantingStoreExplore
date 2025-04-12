@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="com.contrue.mapper.UserMapper">
+
+    <insert id = "insertSubscribes" parameterType = "com.contrue.entity.po.Subscribe" actionType = "update" openToken="#{" closeToken="}">
+        insert into subscribes (subscribes_user_id,subscribes_target_id,subscribes_target_type,subscribes_target_name) values (#{UserId},#{TargetId},#{targetType},#{TargetName})
+    </insert>
+
+    <delete id = "deleteSubscribes" parameterType = "com.contrue.entity.po.Subscribe" actionType = "update" openToken="#{" closeToken="}">
+        delete from subscribes where subscribes_user_id = #{UserId} and subscribes_target_id = #{TargetId} and subscribes_target_type = #{targetType}
+    </delete>
+
+</mapper>

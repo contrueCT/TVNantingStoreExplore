@@ -38,6 +38,20 @@
         where user.id = #{id};
     </select>
 
+    <update id = "addSubscribesCount" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_subscribes_count = subscribes_count + 1 where id = #{id};
+    </update>
 
+    <update id = "reduceSubscribesCount" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_subscribes_count = subscribes_count - 1 where id = #{id};
+    </update>
+
+    <update id = "addFollowersCount" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_followers_count = followers_count + 1 where id = #{id};
+    </update>
+
+    <update id = "reduceFollowersCount" parameterType = "com.contrue.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_followers_count = followers_count - 1 where id = #{id};
+    </update>
 
 </mapper>

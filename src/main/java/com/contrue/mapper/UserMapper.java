@@ -21,4 +21,12 @@ public interface UserMapper {
     List<User> findByUserName(User user);
 
     List<User> joinSelectComment(User user);
+    //通过id查找对应用户并将关注数+1
+    int addSubscribesCount(User user);
+    //通过id查找对应用户并将关注数+1
+    int reduceSubscribesCount(User user);
+    //通过id查找对应用户并将粉丝数+1
+    int addFollowersCount(User user);
+    //通过id查找对应用户并将粉丝数-1
+    int reduceFollowersCount(User user);
 }

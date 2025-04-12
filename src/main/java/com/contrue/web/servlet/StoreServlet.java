@@ -5,6 +5,7 @@ import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Store;
 import com.contrue.entity.po.User;
 import com.contrue.entity.vo.Result;
+import com.contrue.entity.vo.StoreDetailVO;
 import com.contrue.service.Impl.LikeServiceImpl;
 import com.contrue.service.Impl.StoreServiceImpl;
 import com.contrue.service.LikesService;
@@ -73,7 +74,7 @@ public class StoreServlet extends BaseServlet{
         user.setId(Integer.parseInt(userId));
         StoreSelect select = new StoreSelect(store, user);
         System.out.println(select);
-        Store storeDetailById = storeService.getStoreDetailById(select);
+        StoreDetailVO storeDetailById = storeService.getStoreDetailById(select);
         Result result = Result.success(storeDetailById);
         writeJson(response,result);
     }

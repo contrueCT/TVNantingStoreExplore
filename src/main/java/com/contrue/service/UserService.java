@@ -1,5 +1,6 @@
 package com.contrue.service;
 
+import com.contrue.entity.dto.SubscribeDTO;
 import com.contrue.entity.po.Comment;
 import com.contrue.entity.po.Like;
 import com.contrue.entity.po.Permission;
@@ -36,4 +37,8 @@ public interface UserService {
     User checkUserInfoById(User user) throws SQLException;
 
     List<Permission> checkUserPermissionsById(User user) throws SQLException;
+
+    boolean subscribeOther(SubscribeDTO subscribeDTO) throws SQLException;
+
+    boolean cancelSubscribe(SubscribeDTO subscribeDTO) throws SQLException;
 }

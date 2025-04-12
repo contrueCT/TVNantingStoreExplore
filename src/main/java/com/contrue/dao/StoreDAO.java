@@ -27,8 +27,9 @@ public interface StoreDAO {
 
     List<Store> getStoresPage(PageResult<Store> storePageResult, Connection conn);
 
+    //通过id查找对应商铺并将粉丝数+1
+    boolean beSubscribed(Store store,Connection conn);
 
-
-
+    boolean beUnSubscribed(Store store,Connection conn);
 
 }

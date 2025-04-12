@@ -41,6 +41,13 @@ public class User {
     //性别选填
     @Column(name = "gender")
     private String gender;
+    //关注的数量
+    @Column(name = "user_subscribes_count")
+    private Integer subscribesCount;
+    //粉丝的数量
+    @Column(name = "user_followers_count")
+    private Integer followersCount;
+
     @ForeignKey(name = "likes")
     private List<Like> likes;
     @ForeignKey(name = "role")
@@ -50,4 +57,7 @@ public class User {
     //多表查寻获得用户权限
     @ForeignKey(name = "permission")
     private List<Permission> permissions;
+    //多表查寻获得用户关注的商铺/用户
+    @ForeignKey(name = "subscribes")
+    private List<Object> subscribes;
 }

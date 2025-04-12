@@ -6,6 +6,7 @@ import com.contrue.entity.po.Store;
 import com.contrue.entity.po.StoreRole;
 import com.contrue.mapper.StoreMapper;
 import com.contrue.mapper.StoreRoleMapper;
+import com.contrue.util.SystemLogger;
 import com.contrue.util.orm.Resources;
 import com.contrue.util.orm.session.SqlSession;
 import com.contrue.util.orm.session.SqlSessionFactory;
@@ -100,5 +101,33 @@ public class StoreDAOImpl implements StoreDAO {
     public List<Store> getStoresPage(PageResult<Store> storePageResult, Connection conn) {
         StoreMapper storeMapper = getStoreMapper(conn);
         return storeMapper.listStoreByPage(storePageResult);
+    }
+
+    @Override
+    public boolean beSubscribed(Store store, Connection conn) {
+        try{
+            StoreMapper storeMapper = getStoreMapper(conn);
+            if(storeMapper.addFollowersCount(store)>0){
+                return true;
+            }
+            return false;
+        }catch (Exception e){
+            SystemLogger.logError(e.getMessage(),e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean beUnSubscribed(Store store, Connection conn) {
+        try{
+            StoreMapper storeMapper = getStoreMapper(conn);
+            if(storeMapper.reduceFollowersCount(store)>0){
+                return true;
+            }
+            return false;
+        }catch (Exception e){
+            SystemLogger.logError(e.getMessage(),e);
+            throw new RuntimeException(e);
+        }
     }
 }

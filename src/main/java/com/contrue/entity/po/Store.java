@@ -31,7 +31,15 @@ public class Store {
     private String shortDescription;
     @Column(name = "store_description")
     private String description;
-    @ForeignKey(name = "followers")
+
+    @Column(name = "store_comments_count")
+    private Integer commentsCount;
+    @Column(name = "store_likes_count")
+    private Integer likesCount;
+    @Column(name = "store_followers_count")
+    private Integer followersCount;
+
+    @ForeignKey(name = "subscribes")
     private List<User> followers;
     @ForeignKey(name = "roles")
     private List<Role> roles;
@@ -39,6 +47,7 @@ public class Store {
     private List<Like> likes;
     @ForeignKey(name = "comments")
     private List<Comment> comments;
+
 
     private boolean liked;
 }

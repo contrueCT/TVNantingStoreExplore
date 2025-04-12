@@ -38,4 +38,12 @@
         limit #{offset} ,#{size};
     </select>
 
+    <update id = "addFollowersCount" parameterType="com.contrue.entity.po.Store" actionType="update" openToken="#{" closeToken="}">
+        update store set followers_count = followers_count + 1 where id = #{id};
+    </update>
+
+    <update id = "reduceFollowersCount" parameterType="com.contrue.entity.po.Store" actionType="update" openToken="#{" closeToken="}">
+        update store set followers_count = followers_count - 1 where id = #{id};
+    </update>
+
 </mapper>
