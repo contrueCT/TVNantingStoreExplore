@@ -1,7 +1,7 @@
-import com.contrue.orm.Resources;
-import com.contrue.orm.session.SqlSession;
-import com.contrue.orm.session.SqlSessionFactory;
-import com.contrue.orm.session.SqlSessionFactoryBuilder;
+import com.contrue.Framework.orm.Resources;
+import com.contrue.Framework.orm.session.SqlSession;
+import com.contrue.Framework.orm.session.SqlSessionFactory;
+import com.contrue.Framework.orm.session.SqlSessionFactoryBuilder;
 import org.dom4j.DocumentException;
 import org.junit.jupiter.api.Test;
 

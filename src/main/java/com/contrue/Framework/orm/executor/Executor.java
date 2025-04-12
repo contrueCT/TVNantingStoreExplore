@@ -1,6 +1,6 @@
-package com.contrue.orm.executor;
+package com.contrue.Framework.orm.executor;
 
-import com.contrue.orm.configuration.Configuration;
+import com.contrue.Framework.orm.configuration.Configuration;
 
 import java.sql.Connection;
 import java.sql.SQLException;

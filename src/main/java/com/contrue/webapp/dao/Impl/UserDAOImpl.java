@@ -6,10 +6,10 @@ import com.contrue.webapp.mapper.SubscribesMapper;
 import com.contrue.webapp.mapper.UserMapper;
 import com.contrue.webapp.mapper.UserRoleMapper;
 import com.contrue.util.SystemLogger;
-import com.contrue.orm.Resources;
-import com.contrue.orm.session.SqlSession;
-import com.contrue.orm.session.SqlSessionFactory;
-import com.contrue.orm.session.SqlSessionFactoryBuilder;
+import com.contrue.Framework.orm.Resources;
+import com.contrue.Framework.orm.session.SqlSession;
+import com.contrue.Framework.orm.session.SqlSessionFactory;
+import com.contrue.Framework.orm.session.SqlSessionFactoryBuilder;
 import com.contrue.webapp.entity.po.*;
 
 import java.sql.Connection;

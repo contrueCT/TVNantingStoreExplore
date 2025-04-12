@@ -1,4 +1,4 @@
-package com.contrue.orm;
+package com.contrue.Framework.orm;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

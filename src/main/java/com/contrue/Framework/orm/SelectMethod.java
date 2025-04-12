@@ -1,4 +1,4 @@
-package com.contrue.orm;
+package com.contrue.Framework.orm;
 
 /**
  * @author confff

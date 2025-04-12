@@ -1,17 +1,17 @@
-package com.contrue.orm.session;
+package com.contrue.Framework.orm.session;
 
 import com.contrue.util.SystemLogger;
-import com.contrue.orm.configuration.Configuration;
-import com.contrue.orm.configuration.MappedStatement;
-import com.contrue.orm.executor.Executor;
-import com.contrue.orm.executor.SimpleExecutor;
+import com.contrue.Framework.orm.configuration.Configuration;
+import com.contrue.Framework.orm.configuration.MappedStatement;
+import com.contrue.Framework.orm.executor.Executor;
+import com.contrue.Framework.orm.executor.SimpleExecutor;
 
 import java.lang.reflect.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.contrue.orm.session.MethodType.SELECT;
+import static com.contrue.Framework.orm.session.MethodType.SELECT;
 
 /**
  * @author confff

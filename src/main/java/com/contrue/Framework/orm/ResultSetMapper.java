@@ -1,7 +1,7 @@
-package com.contrue.orm;
+package com.contrue.Framework.orm;
 
-import com.contrue.annotation.Column;
-import com.contrue.annotation.ForeignKey;
+import com.contrue.Framework.annotation.Column;
+import com.contrue.Framework.annotation.ForeignKey;
 import com.contrue.util.SystemLogger;
 
 import java.lang.reflect.Field;

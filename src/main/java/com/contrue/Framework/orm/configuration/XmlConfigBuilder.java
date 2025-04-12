@@ -1,6 +1,6 @@
-package com.contrue.orm.configuration;
+package com.contrue.Framework.orm.configuration;
 
-import com.contrue.orm.Resources;
+import com.contrue.Framework.orm.Resources;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;

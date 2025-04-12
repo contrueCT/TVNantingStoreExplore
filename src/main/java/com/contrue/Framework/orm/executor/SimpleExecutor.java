@@ -1,9 +1,9 @@
-package com.contrue.orm.executor;
+package com.contrue.Framework.orm.executor;
 
-import com.contrue.orm.ResultSetMapper;
-import com.contrue.orm.configuration.BoundSql;
-import com.contrue.orm.configuration.Configuration;
-import com.contrue.orm.configuration.MappedStatement;
+import com.contrue.Framework.orm.ResultSetMapper;
+import com.contrue.Framework.orm.configuration.BoundSql;
+import com.contrue.Framework.orm.configuration.Configuration;
+import com.contrue.Framework.orm.configuration.MappedStatement;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;

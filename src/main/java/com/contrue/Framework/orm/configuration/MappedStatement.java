@@ -1,4 +1,4 @@
-package com.contrue.orm.configuration;
+package com.contrue.Framework.orm.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

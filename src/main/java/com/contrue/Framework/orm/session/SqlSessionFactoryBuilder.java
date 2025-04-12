@@ -1,7 +1,7 @@
-package com.contrue.orm.session;
+package com.contrue.Framework.orm.session;
 
-import com.contrue.orm.configuration.Configuration;
-import com.contrue.orm.configuration.XmlConfigBuilder;
+import com.contrue.Framework.orm.configuration.Configuration;
+import com.contrue.Framework.orm.configuration.XmlConfigBuilder;
 import org.dom4j.DocumentException;
 
 import java.io.InputStream;

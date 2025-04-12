@@ -3,10 +3,10 @@ package com.contrue.webapp.dao.Impl;
 import com.contrue.webapp.dao.CommentDAO;
 import com.contrue.webapp.entity.po.Comment;
 import com.contrue.webapp.mapper.CommentMapper;
-import com.contrue.orm.Resources;
-import com.contrue.orm.session.SqlSession;
-import com.contrue.orm.session.SqlSessionFactory;
-import com.contrue.orm.session.SqlSessionFactoryBuilder;
+import com.contrue.Framework.orm.Resources;
+import com.contrue.Framework.orm.session.SqlSession;
+import com.contrue.Framework.orm.session.SqlSessionFactory;
+import com.contrue.Framework.orm.session.SqlSessionFactoryBuilder;
 
 import java.sql.Connection;
 

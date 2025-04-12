@@ -1,7 +1,7 @@
 package com.contrue.webapp.entity.po;
 
-import com.contrue.annotation.Column;
-import com.contrue.annotation.Table;
+import com.contrue.Framework.annotation.Column;
+import com.contrue.Framework.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
