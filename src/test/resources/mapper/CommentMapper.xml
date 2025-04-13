@@ -2,12 +2,12 @@
 <mapper namespace="com.contrue.webapp.mapper.CommentMapper">
 
     <insert id = "insert" parameterType = "com.contrue.webapp.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}" >
-        insert into like (user_id,target_id,target_Type,target_name,user_name)
-        values(#{userId},#{targetId},#{targetType},#{TargetName},#{userName})
+        insert into comment (comment_user_id,comment_target_id,comment_target_name,comment_user_name,content)
+        values(#{userId},#{targetId},#{targetName},#{userName},#{content})
     </insert>
 
     <delete id = "deleteById" parameterType = "com.contrue.webapp.entity.po.Comment" actionType = "update" openToken = "#{" closeToken = "}">
-        delete from like where id = #{id}
+        delete from comment where comment_id = #{id}
     </delete>
 
 </mapper>

@@ -6,5 +6,6 @@
     <mapper resource="mapper/LikeMapper.xml"></mapper>
     <mapper resource="mapper/CommentMapper.xml"></mapper>
     <mapper resource="mapper/StoreMapper.xml"></mapper>
+    <mapper resource="mapper/SubscribesMapper.xml"></mapper>
 
 </configuration>

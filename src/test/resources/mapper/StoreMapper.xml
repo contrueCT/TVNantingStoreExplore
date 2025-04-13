@@ -20,7 +20,7 @@
 
     <select id = "findById" resultType="com.contrue.webapp.entity.po.Store" parameterType = "com.contrue.webapp.entity.po.Store" actionType="select" openToken="#{" closeToken="}">
         select * from store
-        join comment on store.id = comment.target_id
+        left join comment on store.id = comment.comment_target_id
         where store.id = #{id};
     </select>
 
@@ -37,5 +37,13 @@
         order by #{sortBy} desc
         limit #{offset} ,#{size};
     </select>
+
+    <update id = "addFollowersCount" parameterType="com.contrue.webapp.entity.po.Store" actionType="update" openToken="#{" closeToken="}">
+        update store set followers_count = followers_count + 1 where id = #{id};
+    </update>
+
+    <update id = "reduceFollowersCount" parameterType="com.contrue.webapp.entity.po.Store" actionType="update" openToken="#{" closeToken="}">
+        update store set followers_count = followers_count - 1 where id = #{id};
+    </update>
 
 </mapper>
