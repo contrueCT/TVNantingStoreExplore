@@ -28,4 +28,6 @@ public interface StoreService {
     boolean addStore(Store store) throws SQLException;
 
     boolean updateStore(Store store) throws SQLException;
+
+    PageResult<StoreListVO> getStoreListCount();
 }

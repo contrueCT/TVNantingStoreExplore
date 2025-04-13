@@ -2,7 +2,10 @@
 <mapper namespace="com.contrue.webapp.mapper.UserMapper">
 
     <select id = "findById" resultType="com.contrue.webapp.entity.po.User" parameterType = "com.contrue.webapp.entity.po.User" actionType="select" openToken="#{" closeToken="}">
-        select * from user where id = #{id}
+        select * from user
+        left join comment on user.id = comment.comment_user_id
+        left join likes on user.id = likes.like_user_id
+        where user.id = #{id};
     </select>
 
     <insert id = "insertNewUser" resultType = "com.contrue.webapp.entity.po.User" parameterType = "com.contrue.webapp.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
@@ -12,7 +15,7 @@
 
     <select id = "joinSelectLikes" resultType="com.contrue.webapp.entity.po.User" parameterType = "com.contrue.webapp.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
         select * from user
-        left join likes on user.id = likes.user_id
+        left join likes on user.id = likes.like_user_id
         where user.id = #{id};
     </select>
 
@@ -31,10 +34,24 @@
 
     <select id = "joinSelectComment" resultType="com.contrue.webapp.entity.po.User" parameterType = "com.contrue.webapp.entity.po.User" actionType="select" openToken = "#{" closeToken = "}" >
         select * from user
-        join comment on user.id = comment.user_id
+        left join comment on user.id = comment.comment_user_id
         where user.id = #{id};
     </select>
 
+    <update id = "addSubscribesCount" parameterType = "com.contrue.webapp.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_subscribes_count = subscribes_count + 1 where id = #{id};
+    </update>
 
+    <update id = "reduceSubscribesCount" parameterType = "com.contrue.webapp.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_subscribes_count = subscribes_count - 1 where id = #{id};
+    </update>
+
+    <update id = "addFollowersCount" parameterType = "com.contrue.webapp.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_followers_count = followers_count + 1 where id = #{id};
+    </update>
+
+    <update id = "reduceFollowersCount" parameterType = "com.contrue.webapp.entity.po.User" actionType = "update" openToken = "#{" closeToken = "}" >
+        update user set user_followers_count = followers_count - 1 where id = #{id};
+    </update>
 
 </mapper>

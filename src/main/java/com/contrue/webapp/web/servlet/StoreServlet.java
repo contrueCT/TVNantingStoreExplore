@@ -40,8 +40,18 @@ public class StoreServlet extends BaseServlet{
         String sizeStr = request.getParameter("pageSize");
         String sortBy = request.getParameter("sort");
 
+        if(pageStr == null&&sizeStr == null&&sortBy == null){
+            Result success = Result.success(storeService.getStoreListCount());
+            writeJson(response, success);
+            return;
+        }
+
+        if(sortBy == null){
+            sortBy = "comments";
+        }
+
         int page = 1;
-        int pageSize = 10;
+        int pageSize = 6;
 
         if (pageStr != null) {
             page = Integer.parseInt(pageStr);

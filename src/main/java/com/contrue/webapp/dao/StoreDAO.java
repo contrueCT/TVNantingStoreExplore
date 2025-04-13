@@ -32,4 +32,6 @@ public interface StoreDAO {
 
     boolean beUnSubscribed(Store store,Connection conn);
 
+
+
 }

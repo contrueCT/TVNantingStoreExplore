@@ -41,7 +41,7 @@ public class StoreServiceImpl implements StoreService {
         StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         PageResult<Store> pageResultForSelect = new PageResult<>();
-        pageResultForSelect.setSortBy("likes");
+        pageResultForSelect.setSortBy("store_likes_count");
         pageResultForSelect.setCurrentPage(page);
         pageResultForSelect.setSize(size);
         List<Store> stores = storeDAO.getStoresPage(pageResultForSelect,conn);
@@ -73,7 +73,7 @@ public class StoreServiceImpl implements StoreService {
         StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         PageResult<Store> pageResultForSelect = new PageResult<>();
-        pageResultForSelect.setSortBy("comment");
+        pageResultForSelect.setSortBy("store_comments_count");
         pageResultForSelect.setCurrentPage(page);
         pageResultForSelect.setSize(size);
 
@@ -285,5 +285,16 @@ public class StoreServiceImpl implements StoreService {
                 conn.close();
             }
         }
+    }
+
+    @Override
+    public PageResult<StoreListVO> getStoreListCount() {
+        StoreDAO storeDAO = StoreDAOImpl.getInstance();
+        Connection conn = MyDBConnection.getConnection();
+        List<Store> allStores = storeDAO.getAllStores(conn);
+        int total = allStores.size();
+        PageResult<StoreListVO> result =  new PageResult<StoreListVO>();
+        result.setTotal(total);
+        return result;
     }
 }
