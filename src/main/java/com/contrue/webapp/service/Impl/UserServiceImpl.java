@@ -1,5 +1,7 @@
 package com.contrue.webapp.service.Impl;
 
+import com.contrue.Framework.annotation.Autowired;
+import com.contrue.Framework.annotation.Component;
 import com.contrue.webapp.constant.ClassConstants;
 import com.contrue.webapp.constant.MessageConstant;
 import com.contrue.webapp.constant.StateCodeConstant;
@@ -24,21 +26,17 @@ import java.util.List;
 /**
  * @author confff
  */
+@Component
 public class UserServiceImpl implements UserService {
-    private UserServiceImpl(){
-    }
 
-    private static class SingletonHolder{
-        private static final UserServiceImpl INSTANCE = new UserServiceImpl();
-    }
+    @Autowired
+    private StoreDAO storeDAO;
 
-    public static UserServiceImpl getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
+    @Autowired
+    private UserDAO userDAO;
 
     @Override
     public boolean registerUser(User user) throws SQLException {
-        UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
         try {
@@ -71,7 +69,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthResult loginUser(User user) throws SQLException {
-        UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         AuthResult authResult = new AuthResult();
         try {
@@ -114,7 +111,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Like> checkOwnLikesById(User user) throws SQLException {
-        UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         try {
             //非空校验
@@ -138,7 +134,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Comment> checkOwnCommentsById(User user) throws SQLException {
-        UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         try {
             //非空校验
@@ -162,7 +157,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User checkUserInfoById(User user) throws SQLException {
-        UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         try {
             //非空校验
@@ -186,7 +180,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Permission> checkUserPermissionsById(User user) throws SQLException {
-        UserDAO userDAO = UserDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         try {
             if(user==null){
@@ -210,8 +203,6 @@ public class UserServiceImpl implements UserService {
         if(subscribeDTO.getUserId()==null||subscribeDTO.getTargetId()==null||subscribeDTO.getTargetType()==null){
             return false;
         }
-        UserDAO userDAO = UserDAOImpl.getInstance();
-        StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
         try{
@@ -254,8 +245,6 @@ public class UserServiceImpl implements UserService {
         if(subscribeDTO.getUserId()==null||subscribeDTO.getTargetId()==null||subscribeDTO.getTargetType()==null){
             return false;
         }
-        UserDAO userDAO = UserDAOImpl.getInstance();
-        StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
         try{

@@ -2,8 +2,11 @@ package com.contrue.Framework.IOC;
 
 import com.contrue.Framework.annotation.Autowired;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -59,32 +62,39 @@ public class SimpleIOC implements BeanFactory {
 
     private Object createBean(BeanDefinition bd) throws Exception{
         Class<?> clazz = bd.getType();
-        Object instance = clazz.getDeclaredConstructor().newInstance();
+        Constructor<?> constructor = clazz.getDeclaredConstructor();
+        //调试
+        System.out.println("尝试创建Bean: " + bd.getName() + " (" + clazz.getName() + ")");
+
+        constructor.setAccessible(true);
+
+        Object instance = constructor.newInstance();
 
         injectDependencies(instance);
+        //调试
+        System.out.println("成功创建Bean: " + bd.getName() + " (" + clazz.getName() + ")");
         return instance;
     }
 
     protected void injectDependencies(Object bean) throws Exception {
         Class<?> clazz = bean.getClass();
+        System.out.println("开始为 " + bean.getClass().getName() + " 注入依赖");
 
+        // 遍历字段，检查是否有需要注入的依赖
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(Autowired.class)) {
                 field.setAccessible(true);
-                Autowired autowired = field.getAnnotation(Autowired.class);
-                try {
-                    Object dependency = getBean(field.getType());
-                    field.set(bean, dependency);
-                } catch (Exception e) {
-                    if(autowired.required()) {
-                        throw new RuntimeException("Failed to inject dependency: " + field.getName(), e);
-                    } else {
-                        System.err.println("未找到这个类（不必要）: " + field.getName());
-                    }
+                System.out.println("发现 @Autowired 字段: " + field.getName() + ", 类型: " + field.getType().getName());
 
-                }
+                // 正确的方式：使用字段类型获取Bean
+                Object dependency = getBean(field.getType());
+
+                // 设置字段值
+                field.set(bean, dependency);
+                System.out.println("成功将类型 " + dependency.getClass().getName() + " 注入到字段 " + field.getName());
             }
         }
+        System.out.println("完成为 " + bean.getClass().getName() + " 注入依赖");
     }
 
     @Override
@@ -99,13 +109,30 @@ public class SimpleIOC implements BeanFactory {
 
     @Override
     public <T> T getBean(Class<T> requiredType) throws Exception {
-        for(String beanName : beanDefinitionMap.keySet()) {
+        //调试
+        System.out.println("尝试获取类型为 " + requiredType.getName() + " 的Bean");
+
+        for (String beanName : beanDefinitionMap.keySet()) {
             BeanDefinition bd = beanDefinitionMap.get(beanName);
-            if(requiredType.isAssignableFrom(bd.getType())) {
+            if (requiredType.equals(bd.getType())) {
+                //调试
+                System.out.println("找到精确类型匹配: " + beanName);
                 return requiredType.cast(getBean(beanName));
             }
         }
-        throw new IllegalArgumentException("没有找到类型为" + requiredType.getName() + "的bean");
+
+        //尝试接口/父类匹配
+        for (String beanName : beanDefinitionMap.keySet()) {
+            BeanDefinition bd = beanDefinitionMap.get(beanName);
+            if (requiredType.isAssignableFrom(bd.getType())) {
+                //调试
+                System.out.println("找到接口/父类匹配: " + beanName +
+                        " (" + bd.getType().getName() + ")");
+                return requiredType.cast(getBean(beanName));
+            }
+        }
+
+        throw new Exception("没有找到类型为" + requiredType.getName() + "的Bean");
     }
 
     @Override

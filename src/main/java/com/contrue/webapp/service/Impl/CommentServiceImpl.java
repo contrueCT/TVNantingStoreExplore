@@ -1,5 +1,7 @@
 package com.contrue.webapp.service.Impl;
 
+import com.contrue.Framework.annotation.Autowired;
+import com.contrue.Framework.annotation.Component;
 import com.contrue.webapp.dao.CommentDAO;
 import com.contrue.webapp.dao.Impl.CommentDAOImpl;
 import com.contrue.webapp.entity.po.Comment;
@@ -13,22 +15,15 @@ import java.sql.SQLException;
  *
  * @author confff
  */
+@Component
 public class CommentServiceImpl implements CommentService {
 
-    private static class SingletonHolder {
-        private static final CommentService INSTANCE = new CommentServiceImpl();
-    }
-
-    private CommentServiceImpl(){}
-
-    public static CommentService getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
+    @Autowired
+    private CommentDAO commentDAO;
 
     @Override
     public boolean deleteComment(Comment comment) throws SQLException {
         Connection conn = MyDBConnection.getConnection();
-        CommentDAO commentDAO = CommentDAOImpl.getInstance();
         conn.setAutoCommit(false);
         try {
             if(comment==null){
@@ -53,7 +48,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public boolean commentStore(Comment comment) throws SQLException {
         Connection conn = MyDBConnection.getConnection();
-        CommentDAO commentDAO = CommentDAOImpl.getInstance();
         conn.setAutoCommit(false);
         try {
             if(comment==null){

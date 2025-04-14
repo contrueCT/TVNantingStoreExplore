@@ -1,5 +1,7 @@
 package com.contrue.webapp.service.Impl;
 
+import com.contrue.Framework.annotation.Autowired;
+import com.contrue.Framework.annotation.Component;
 import com.contrue.webapp.dao.Impl.LikeDAOImpl;
 import com.contrue.webapp.dao.Impl.StoreDAOImpl;
 import com.contrue.webapp.dao.StoreDAO;
@@ -24,21 +26,15 @@ import java.util.List;
 /**
  * @author confff
  */
+@Component
 public class StoreServiceImpl implements StoreService {
-    //记得加初始化
-    private static class SingletonHolder {
-        private static final StoreServiceImpl INSTANCE = new StoreServiceImpl();
-    }
-
-    public static StoreServiceImpl getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
-    private StoreServiceImpl() {}
+    @Autowired
+    private StoreDAO storeDAO;
+    @Autowired
+    private LikeDAOImpl likeDAO;
 
     @Override
     public PageResult<StoreListVO> getStoresByLikes(int page, int size) {
-        StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         PageResult<Store> pageResultForSelect = new PageResult<>();
         pageResultForSelect.setSortBy("store_likes_count");
@@ -70,7 +66,6 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public PageResult<StoreListVO> getStoresByComments(int page, int size) {
-        StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         PageResult<Store> pageResultForSelect = new PageResult<>();
         pageResultForSelect.setSortBy("store_comments_count");
@@ -101,7 +96,6 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public AuthResult loginStore(Store store) throws SQLException {
-        StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
         AuthResult authResult = new AuthResult();
@@ -153,7 +147,7 @@ public class StoreServiceImpl implements StoreService {
         Connection conn = MyDBConnection.getConnection();
         try {
             conn.setAutoCommit(false);
-            List<Store> storeList = StoreDAOImpl.getInstance().getAllStores(conn);
+            List<Store> storeList = storeDAO.getAllStores(conn);
             if (storeList == null) {
                 return Collections.emptyList();
             }
@@ -180,13 +174,13 @@ public class StoreServiceImpl implements StoreService {
         Connection conn = MyDBConnection.getConnection();
         conn.setAutoCommit(false);
         try{
-            Store checkStore = StoreDAOImpl.getInstance().findById(store,conn);
+            Store checkStore = storeDAO.findById(store,conn);
             //判断是否被当前用户点赞
             Like selectedLike = new Like();
             selectedLike.setUserId(user.getId());
             selectedLike.setTargetId(checkStore.getId());
             selectedLike.setTargetType("store");
-            Like isLike = LikeDAOImpl.getInstance().getLike(selectedLike, conn);
+            Like isLike = likeDAO.getLike(selectedLike, conn);
             if(isLike!=null){
                 checkStore.setLiked(true);
             }
@@ -198,22 +192,14 @@ public class StoreServiceImpl implements StoreService {
                 selectedLikeComment.setUserId(user.getId());
                 selectedLikeComment.setTargetId(comment.getId());
                 selectedLikeComment.setTargetType("comment");
-                Like isLikeComment = LikeDAOImpl.getInstance().getLike(selectedLikeComment, conn);
+                Like isLikeComment = likeDAO.getLike(selectedLikeComment, conn);
                 if(isLikeComment!=null){
                     comment.setLiked(true);
                 }
             }
 
-            StoreDetailVO storeDetailVO = new StoreDetailVO();
-            storeDetailVO.setId(checkStore.getId());
-            storeDetailVO.setName(checkStore.getName());
-            storeDetailVO.setDescription(checkStore.getDescription());
-            storeDetailVO.setAddress(checkStore.getAddress());
-            storeDetailVO.setPhone(checkStore.getPhone());
-            storeDetailVO.setShortDescription(checkStore.getShortDescription());
-            storeDetailVO.setLikesCount(checkStore.getLikesCount());
-            storeDetailVO.setCommentsCount(checkStore.getCommentsCount());
-            storeDetailVO.setComments(checkStore.getComments());
+            //设置商铺详情
+            StoreDetailVO storeDetailVO = getStoreDetailVO(checkStore);
 
             conn.commit();
             return storeDetailVO;
@@ -229,6 +215,21 @@ public class StoreServiceImpl implements StoreService {
                 conn.close();
             }
         }
+    }
+
+    private static StoreDetailVO getStoreDetailVO(Store checkStore) {
+        StoreDetailVO storeDetailVO = new StoreDetailVO();
+        storeDetailVO.setId(checkStore.getId());
+        storeDetailVO.setName(checkStore.getName());
+        storeDetailVO.setDescription(checkStore.getDescription());
+        storeDetailVO.setAddress(checkStore.getAddress());
+        storeDetailVO.setPhone(checkStore.getPhone());
+        storeDetailVO.setShortDescription(checkStore.getShortDescription());
+        storeDetailVO.setLikesCount(checkStore.getLikesCount());
+        storeDetailVO.setCommentsCount(checkStore.getCommentsCount());
+        storeDetailVO.setComments(checkStore.getComments());
+        storeDetailVO.setLiked(checkStore.isLiked());
+        return storeDetailVO;
     }
 
 
@@ -247,7 +248,7 @@ public class StoreServiceImpl implements StoreService {
 
             store.setPassword(BCrypt.hashpw(store.getPassword(), BCrypt.gensalt()));
 
-            boolean result = StoreDAOImpl.getInstance().addStore(store,conn);
+            boolean result = storeDAO.addStore(store,conn);
             conn.commit();
             return result;
         } catch (Exception e) {
@@ -271,7 +272,7 @@ public class StoreServiceImpl implements StoreService {
             if(store==null){
                 return false;
             }
-            boolean result = StoreDAOImpl.getInstance().updateStore(store,conn);
+            boolean result = storeDAO.updateStore(store,conn);
             conn.commit();
             return result;
         } catch (Exception e) {
@@ -289,7 +290,6 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public PageResult<StoreListVO> getStoreListCount() {
-        StoreDAO storeDAO = StoreDAOImpl.getInstance();
         Connection conn = MyDBConnection.getConnection();
         List<Store> allStores = storeDAO.getAllStores(conn);
         int total = allStores.size();

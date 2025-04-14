@@ -1,5 +1,6 @@
 package com.contrue.webapp.dao.Impl;
 
+import com.contrue.Framework.annotation.Component;
 import com.contrue.webapp.dao.UserDAO;
 import com.contrue.webapp.entity.dto.SubscribeDTO;
 import com.contrue.webapp.mapper.SubscribesMapper;
@@ -18,18 +19,8 @@ import java.util.List;
 /**
  * @author confff
  */
+@Component
 public class UserDAOImpl implements UserDAO {
-
-    private static class SingletonHolder {
-        private static final UserDAO INSTANCE = new UserDAOImpl();
-    }
-
-    public static UserDAO getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
-    private UserDAOImpl() {
-    }
 
     private static SqlSessionFactory sqlSessionFactory;
     private static SqlSession sqlSession;

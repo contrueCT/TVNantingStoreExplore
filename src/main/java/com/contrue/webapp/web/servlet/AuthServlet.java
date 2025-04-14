@@ -1,5 +1,6 @@
 package com.contrue.webapp.web.servlet;
 
+import com.contrue.Framework.annotation.Autowired;
 import com.contrue.webapp.entity.dto.AuthResult;
 import com.contrue.webapp.entity.po.Store;
 import com.contrue.webapp.entity.po.User;
@@ -32,8 +33,10 @@ public class AuthServlet extends BaseServlet
         return "/api/auth/*";
     }
 
-    UserService userService = UserServiceImpl.getInstance();
-    StoreService storeService = StoreServiceImpl.getInstance();
+    @Autowired
+    UserService userService;
+    @Autowired
+    StoreService storeService;
 
     //用户注册
     public void putUser(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {

@@ -15,6 +15,7 @@ public class AnnotationConfigApplicationContext extends SimpleIOC {
     public void scan(String basePackage) throws Exception {
         Set<Class<?>> classes = scanPackage(basePackage);
         for (Class<?> clazz : classes) {
+
             if (clazz.isAnnotationPresent(Component.class)) {
                 Component component = clazz.getAnnotation(Component.class);
                 String beanName = component.value();

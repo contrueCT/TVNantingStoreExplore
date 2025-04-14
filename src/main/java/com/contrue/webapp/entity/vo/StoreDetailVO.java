@@ -23,6 +23,7 @@ public class StoreDetailVO {
     private String shortDescription;
     private Integer likesCount;
     private Integer commentsCount;
+    private boolean liked;
 
     private List<Comment> comments;
 

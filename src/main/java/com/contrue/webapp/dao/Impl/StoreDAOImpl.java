@@ -1,5 +1,6 @@
 package com.contrue.webapp.dao.Impl;
 
+import com.contrue.Framework.annotation.Component;
 import com.contrue.webapp.dao.StoreDAO;
 import com.contrue.webapp.entity.dto.PageResult;
 import com.contrue.webapp.entity.po.Store;
@@ -18,17 +19,8 @@ import java.util.List;
 /**
  * @author confff
  */
+@Component
 public class StoreDAOImpl implements StoreDAO {
-
-    private static class SingletonHolder {
-        private static final StoreDAO INSTANCE = new StoreDAOImpl();
-    }
-
-    public static StoreDAO getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
-    private StoreDAOImpl(){}
 
     private static SqlSessionFactory sqlSessionFactory;
     private static SqlSession sqlSession;

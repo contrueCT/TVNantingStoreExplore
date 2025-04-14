@@ -1,13 +1,19 @@
 package com.contrue.webapp.web.servlet;
 
+import com.contrue.Framework.IOC.AnnotationConfigApplicationContext;
+import com.contrue.Framework.annotation.Autowired;
 import com.contrue.webapp.entity.vo.Result;
 import com.contrue.util.SystemLogger;
+import com.contrue.webapp.web.SimpleIoCContextListener;
 import com.google.gson.Gson;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +24,51 @@ import java.util.regex.Pattern;
  */
 
 public abstract class BaseServlet extends HttpServlet {
+
+    private AnnotationConfigApplicationContext iocContext;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+
+        System.out.println("Servlet初始化");
+
+        iocContext = SimpleIoCContextListener.getIoCContext(getServletContext());
+
+        if (iocContext == null) {
+            throw new ServletException("IoC容器未初始化");
+        }
+
+        injectDependencies();
+        System.out.println("Servlet依赖注入完成");
+    }
+
+    /**
+     * 为Servlet注入依赖
+     */
+    private void injectDependencies() throws ServletException {
+        Class<?> clazz = this.getClass();
+
+        //遍历子类和父类的所有字段
+        while (clazz != null && clazz != Object.class) {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(Autowired.class)) {
+                    field.setAccessible(true);
+                    try {
+                        Object dependency = iocContext.getBean(field.getType());
+                        if(dependency == null) {
+                            throw new ServletException("未找到类型为" + field.getType().getName() + "的依赖");
+                        }
+                        field.set(this, dependency);
+                    } catch (Exception e) {
+                        throw new ServletException("自动注入字段" + field.getName() + "失败", e);
+                    }
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
+    }
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");

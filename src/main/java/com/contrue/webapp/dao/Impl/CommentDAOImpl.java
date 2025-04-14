@@ -1,5 +1,6 @@
 package com.contrue.webapp.dao.Impl;
 
+import com.contrue.Framework.annotation.Component;
 import com.contrue.webapp.dao.CommentDAO;
 import com.contrue.webapp.entity.po.Comment;
 import com.contrue.webapp.mapper.CommentMapper;
@@ -13,18 +14,8 @@ import java.sql.Connection;
 /**
  * @author confff
  */
+@Component
 public class CommentDAOImpl implements CommentDAO {
-
-    private static class SingletonHolder {
-        private static final CommentDAO INSTANCE = new CommentDAOImpl();
-    }
-
-    private CommentDAOImpl(){
-    }
-
-    public static CommentDAO getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
 
     private static SqlSessionFactory sqlSessionFactory;
     private static SqlSession sqlSession;

@@ -1,5 +1,6 @@
 package com.contrue.webapp.web.servlet;
 
+import com.contrue.Framework.annotation.Autowired;
 import com.contrue.webapp.entity.po.Comment;
 import com.contrue.webapp.entity.po.Like;
 import com.contrue.webapp.entity.vo.Result;
@@ -25,8 +26,10 @@ public class CommentServlet extends BaseServlet {
         return "/api/comments/{commentId}/like";
     }
 
-    CommentService commentService = CommentServiceImpl.getInstance();
-    LikesService likesService = LikeServiceImpl.getInstance();
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    LikesService likesService;
 
     //新增评论
     public void postComments(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {

@@ -1,5 +1,6 @@
 package com.contrue.webapp.web.servlet;
 
+import com.contrue.Framework.annotation.Autowired;
 import com.contrue.webapp.entity.dto.StoreSelect;
 import com.contrue.webapp.entity.po.Like;
 import com.contrue.webapp.entity.po.Store;
@@ -28,8 +29,11 @@ public class StoreServlet extends BaseServlet{
         return "/api/stores/{storeId}/*";
     }
 
-    private StoreService storeService = StoreServiceImpl.getInstance();
-    private LikesService likesService = LikeServiceImpl.getInstance();
+    @Autowired
+    private StoreService storeService;
+
+    @Autowired
+    private LikesService likesService;
 
     //获取商铺详情
     public void getStores(HttpServletRequest request, HttpServletResponse response) throws IOException {

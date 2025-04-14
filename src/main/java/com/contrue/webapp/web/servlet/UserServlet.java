@@ -1,5 +1,6 @@
 package com.contrue.webapp.web.servlet;
 
+import com.contrue.Framework.annotation.Autowired;
 import com.contrue.webapp.entity.dto.SubscribeDTO;
 import com.contrue.webapp.entity.po.Comment;
 import com.contrue.webapp.entity.po.Like;
@@ -29,7 +30,8 @@ public class UserServlet extends BaseServlet {
         return "/api/users/*";
     }
 
-    UserService userService = UserServiceImpl.getInstance();
+    @Autowired
+    UserService userService;
     //获取个人基本信息
     public void getMe(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         String userId = request.getAttribute("subjectId").toString();

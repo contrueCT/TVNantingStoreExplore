@@ -1,5 +1,6 @@
 package com.contrue.webapp.dao.Impl;
 
+import com.contrue.Framework.annotation.Component;
 import com.contrue.webapp.dao.LikeDAO;
 import com.contrue.webapp.entity.po.Like;
 import com.contrue.webapp.mapper.LikeMapper;
@@ -13,17 +14,8 @@ import java.sql.Connection;
 /**
  * @author confff
  */
+@Component
 public class LikeDAOImpl implements LikeDAO {
-
-    private static class SingletonHolder {
-        private static final LikeDAO INSTANCE = new LikeDAOImpl();
-    }
-
-    private LikeDAOImpl(){}
-
-    public static LikeDAO getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
 
     private static SqlSessionFactory sqlSessionFactory;
     private static SqlSession sqlSession;
