@@ -4,9 +4,9 @@ import com.contrue.Framework.annotation.Autowired;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.HashSet;
+
 import java.util.Map;
-import java.util.Set;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SimpleIOC implements BeanFactory {
 
-    private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
+    protected final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
     private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
 

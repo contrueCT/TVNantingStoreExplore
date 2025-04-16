@@ -15,6 +15,7 @@ import com.contrue.webapp.service.StoreService;
 import com.contrue.util.JWT.JWTUtil;
 import com.contrue.util.MyDBConnection;
 import com.contrue.util.SystemLogger;
+import com.contrue.webapp.service.cache.StoreCacheService;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
@@ -28,53 +29,32 @@ import java.util.List;
  */
 @Component
 public class StoreServiceImpl implements StoreService {
+
+    private static final String SORT_BY_LIKES = "store_likes_count";
+    private static final String SORT_BY_COMMENTS = "store_comments_count";
+    private static final String SORT_BY_LIKES_DESC = "likes";
+    private static final String SORT_BY_COMMENTS_DESC = "comment";
+
     @Autowired
     private StoreDAO storeDAO;
     @Autowired
     private LikeDAOImpl likeDAO;
+    @Autowired
+    private StoreCacheService storeCacheService;
 
     @Override
     public PageResult<StoreListVO> getStoresByLikes(int page, int size) {
-        Connection conn = MyDBConnection.getConnection();
-        PageResult<Store> pageResultForSelect = new PageResult<>();
-        pageResultForSelect.setSortBy("store_likes_count");
-        pageResultForSelect.setCurrentPage(page);
-        pageResultForSelect.setSize(size);
-        List<Store> stores = storeDAO.getStoresPage(pageResultForSelect,conn);
-
-        List<StoreListVO> storeListVOs = new ArrayList<>();
-
-        for(Store store : stores){
-            StoreListVO storeListVO = new StoreListVO();
-            storeListVO.setId(store.getId());
-            storeListVO.setName(store.getName());
-            storeListVO.setLikesCount(store.getLikesCount());
-            storeListVO.setCommentsCount(store.getCommentsCount());
-            storeListVO.setShortDescription(store.getShortDescription());
-            storeListVO.setAddress(store.getAddress());
-            storeListVOs.add(storeListVO);
-        }
-
-        PageResult<StoreListVO> pageResult = new PageResult<>();
-        pageResult.setSortBy("likes");
-        pageResult.setCurrentPage(page);
-        pageResult.setSize(size);
-        pageResult.setResults(storeListVOs);
-        pageResult.setTotal(stores.size());
-        return pageResult;
+        return getStorePageResult(SORT_BY_LIKES_DESC, page, size);
     }
 
     @Override
     public PageResult<StoreListVO> getStoresByComments(int page, int size) {
-        Connection conn = MyDBConnection.getConnection();
-        PageResult<Store> pageResultForSelect = new PageResult<>();
-        pageResultForSelect.setSortBy("store_comments_count");
-        pageResultForSelect.setCurrentPage(page);
-        pageResultForSelect.setSize(size);
+        return getStorePageResult(SORT_BY_COMMENTS_DESC, page, size);
+    }
 
-        List<Store> stores = storeDAO.getStoresPage(pageResultForSelect,conn);
-
+    private static List<StoreListVO> getStoreListVOS(List<Store> stores) {
         List<StoreListVO> storeListVOs = new ArrayList<>();
+
         for(Store store : stores){
             StoreListVO storeListVO = new StoreListVO();
             storeListVO.setId(store.getId());
@@ -85,8 +65,42 @@ public class StoreServiceImpl implements StoreService {
             storeListVO.setAddress(store.getAddress());
             storeListVOs.add(storeListVO);
         }
+        return storeListVOs;
+    }
+
+    private PageResult<StoreListVO> getStorePageResult(String sortBy, int page, int size){
+        String sortByDesc = null;
+        String sort = null;
+        if(SORT_BY_LIKES_DESC.equals(sortBy)) {
+            sortByDesc = SORT_BY_LIKES_DESC;
+            sort = SORT_BY_LIKES;
+        }else{
+            sortByDesc = SORT_BY_COMMENTS_DESC;
+            sort = SORT_BY_COMMENTS;
+        }
+
+        Connection conn = MyDBConnection.getConnection();
+        PageResult<Store> pageResultForSelect = new PageResult<>();
+        pageResultForSelect.setSortBy(sort);
+        pageResultForSelect.setCurrentPage(page);
+        pageResultForSelect.setSize(size);
+
+        List<Store> stores;
+        //从缓存中获取商铺列表
+        PageResult<Store> storePageResult = storeCacheService.getStorePageFromCache(page, size, sortByDesc);
+
+        if(storePageResult != null){
+            stores = storePageResult.getResults();
+        }else{
+            stores = storeDAO.getStoresPage(pageResultForSelect,conn);
+            //将商铺列表存入缓存
+            storeCacheService.cacheStorePage(pageResultForSelect);
+        }
+        //将商铺列表转换为商铺列表视图对象
+        List<StoreListVO> storeListVOs = getStoreListVOS(stores);
+
         PageResult<StoreListVO> pageResult = new PageResult<>();
-        pageResult.setSortBy("comment");
+        pageResult.setSortBy(sortByDesc);
         pageResult.setCurrentPage(page);
         pageResult.setSize(size);
         pageResult.setResults(storeListVOs);

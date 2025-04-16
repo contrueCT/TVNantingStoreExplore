@@ -2,9 +2,12 @@ package com.contrue.webapp.web.servlet;
 
 import com.contrue.Framework.IOC.AnnotationConfigApplicationContext;
 import com.contrue.Framework.annotation.Autowired;
+import com.contrue.Framework.annotation.DubboReference;
+import com.contrue.Framework.dubboIOC.DubboApplicationContext;
+import com.contrue.Framework.dubboIOC.DubboContextListener;
 import com.contrue.webapp.entity.vo.Result;
 import com.contrue.util.SystemLogger;
-import com.contrue.webapp.web.SimpleIoCContextListener;
+import com.contrue.Framework.IOC.SimpleIoCContextListener;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletConfig;
@@ -26,6 +29,7 @@ import java.util.regex.Pattern;
 public abstract class BaseServlet extends HttpServlet {
 
     private AnnotationConfigApplicationContext iocContext;
+    private DubboApplicationContext dubboContext;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -34,6 +38,7 @@ public abstract class BaseServlet extends HttpServlet {
         System.out.println("Servlet初始化");
 
         iocContext = SimpleIoCContextListener.getIoCContext(getServletContext());
+        dubboContext = DubboContextListener.getDubboContext(getServletContext());
 
         if (iocContext == null) {
             throw new ServletException("IoC容器未初始化");
@@ -62,6 +67,26 @@ public abstract class BaseServlet extends HttpServlet {
                         field.set(this, dependency);
                     } catch (Exception e) {
                         throw new ServletException("自动注入字段" + field.getName() + "失败", e);
+                    }
+                }
+                if(field.isAnnotationPresent(DubboReference.class)&& dubboContext != null) {
+                    try {
+                        field.setAccessible(true);
+                        DubboReference annotation = field.getAnnotation(DubboReference.class);
+                        Object reference = dubboContext.getDubboReference(
+                                field.getType(),
+                                annotation.version(),
+                                annotation.group(),
+                                annotation.timeout(),
+                                annotation.check());
+                        if(reference == null) {
+                            throw new ServletException("未找到类型为" + field.getType().getName() + "的引用");
+                        }
+
+                        field.set(this, reference);
+                        System.out.println("成功将类型 " + reference.getClass().getName() + " 注入到字段 " + field.getName());
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }

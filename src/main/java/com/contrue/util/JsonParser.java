@@ -25,4 +25,14 @@ public class JsonParser {
         Gson gson = new Gson();
         return gson.fromJson(json,clazz);
     }
+
+    public static <T> T parseJson(String json, Class<T> clazz) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, clazz);
+    }
+
+    public static String toJson(Object object) {
+        Gson gson = new Gson();
+        return gson.toJson(object);
+    }
 }

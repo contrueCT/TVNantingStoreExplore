@@ -18,6 +18,7 @@ public class PageResult<T> {
     //当前查询页
     private int currentPage;
     //页大小
+    //对于商铺列表，默认为6
     private int size;
     //查询结果
     private List<T> results;
